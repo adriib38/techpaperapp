@@ -3,8 +3,10 @@ require("dotenv").config();
 
 // Middleware to verify the token
 function verifyToken(req, res, next) {
+
   // Check if there is a token
-  const token = req.headers["x-access-token"];
+  const token = req.get("Authorization").split(" ")[1];
+
   if (!token) {
     return res
       .status(403)
@@ -24,6 +26,7 @@ function verifyToken(req, res, next) {
     // If the token is invalid, handle the error
     return res.status(401).json({ auth: false, message: "Unauthorized" });
   }
+
 }
 
 module.exports = verifyToken;

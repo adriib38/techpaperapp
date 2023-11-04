@@ -6,6 +6,7 @@ const verifyToken = require("../../controllers/middleware/verifyToken");
 const router = express.Router();
 
 router
-    .get("/all", verifyToken, postController.getAllPosts)
+    .get("/all", postController.getAllPosts)
+    .post("/create", verifyToken, postController.createPost)
 
 module.exports = router;

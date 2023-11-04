@@ -8,5 +8,6 @@ const router = express.Router();
 router
     .get("/all", postController.getAllPosts)
     .post("/create", verifyToken, postController.createPost)
+    .get("/user/:username", postController.getPostsByUsername);
 
 module.exports = router;

@@ -15,7 +15,7 @@ const signup = async (req, res) => {
     if (!err) {
       // Create a token
       let token = jwt.sign({ id: user.uuid }, process.env.JWT_SECRET, {
-        expiresIn: 86400, // 24 hours
+        expiresIn: 60 * 60 * 24 * 30, // 30 days
       });
 
       // Send the response if no error was thrown
@@ -23,6 +23,12 @@ const signup = async (req, res) => {
         .status(201)
         .json({ message: "User created", user: user, token: token });
     } else {
+
+      // User already exists
+      if (err.code === "ER_DUP_ENTRY") {
+        return res.status(409).json({ message: "User already exists" });
+      }
+
       // Send the error if there was one
       res.status(500).json({ message: "Error creating user", error: err });
     }
@@ -47,7 +53,7 @@ const signin = async (req, res) => {
     if (passIsValid) {
       // Create a token inside the callback
       let token = jwt.sign({ id: results.uuid }, process.env.JWT_SECRET, {
-        expiresIn: 86400, // 24 hours
+        expiresIn: 60 * 60 * 24 * 30, // 30 days
       });
 
       res.status(201).json({ auth: "true", user: results, token: token });
@@ -57,7 +63,7 @@ const signin = async (req, res) => {
   });
 };
 
-// Test endpoint to check if the user is authenticated
+// Return the user data from the token
 const me = async (req, res, next) => {
 
   User.getUserById(req.uuid, (err, results) => {
@@ -69,12 +75,42 @@ const me = async (req, res, next) => {
     }
 
     res.status(200).json({ message: "User found", user: results });
-  }
-  );
+  });
 }
+
+const getUserByUuid = async (req, res, next) => {
+
+  User.getUserByUuid(req.params.uuid, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error getting user", error: err });
+    }
+
+    res.status(200).json({ message: "User found", user: results });
+  });
+}
+
+const getUserByUsername = async (req, res, next) => {
+
+  User.getUserByUsername(req.params.username, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error getting user", error: err });
+    }
+
+    res.status(200).json({ message: "User found", user: results });
+  });
+}
+
 
 module.exports = {
   signup,
   signin,
   me,
+  getUserByUuid,
+  getUserByUsername
 };

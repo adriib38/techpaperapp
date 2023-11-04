@@ -56,7 +56,7 @@ class User {
     });
   }
 
-  static getUserById(uuid, callback) {  
+  static getUserByUuid(uuid, callback) {  
 
     // Check if the uuid is received
     if (!uuid) {
@@ -76,17 +76,17 @@ class User {
     });
   }
 
-  static getUserByEmail(email, callback) {  
+  static getUserByUsername(username, callback) {  
 
     // Check if the uuid is received
-    if (!email) {
+    if (!username) {
       const error = new Error("Missing required fields");
       console.error("Error getting user:", error);
       return callback(error, null);
     }
 
     // Get the user from the database
-    db.query("SELECT * FROM user WHERE email = ?", [email], (err, results) => {
+    db.query("SELECT * FROM user WHERE username = ?", [username], (err, results) => {
       if (err) {
         console.error("Error getting user:", err);
         callback(err, null);
@@ -95,7 +95,6 @@ class User {
       }
     });
   }
-
 
 }
 

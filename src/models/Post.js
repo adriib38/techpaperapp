@@ -46,6 +46,26 @@ class Post {
       
   }
 
+  static getPostsByUsername(username, callback) {  
+
+    // Check if the uuid is received
+    if (!username) {
+      const error = new Error("Missing required fields");
+      console.error("Error getting user:", error);
+      return callback(error, null);
+    }
+    
+    db.query(
+      "SELECT username, title, content, PO.created_at FROM`post` PO JOIN `user` US ON PO.author_id = US.uuid WHERE US.username LIKE ?", [username], (err, results) => {
+        if (err) {
+          console.error("Error getting user:", err);
+          callback(err, null);
+        } else {
+          callback(null, results);
+        }
+    });
+  }
 }
+
 
 module.exports = Post;

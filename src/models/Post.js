@@ -9,11 +9,6 @@ class Post {
     this.author = post.author;
   }
 
-  /** 
-   * 
-   * Getters
-   * 
-   **/
 
   static getAllPosts(callback) {
     db.query("SELECT * FROM post", (err, results) => {

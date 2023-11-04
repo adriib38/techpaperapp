@@ -44,12 +44,6 @@ class User {
     );
   }
 
-  /** 
-   * 
-   * Getters
-   * 
-   **/
-
   static getAllUsers(callback) {
     db.query("SELECT * FROM user", (err, results) => {
       callback(err, results);

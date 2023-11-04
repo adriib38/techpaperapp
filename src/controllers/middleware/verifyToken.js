@@ -5,7 +5,7 @@ require("dotenv").config();
 function verifyToken(req, res, next) {
 
   // Check if there is a token
-  const token = req.get("Authorization").split(" ")[1];
+  let token = req.get("Authorization");
 
   if (!token) {
     return res
@@ -14,6 +14,8 @@ function verifyToken(req, res, next) {
   }
 
   try {
+    token = req.get("Authorization").split(" ")[1];
+    
     // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -24,7 +26,7 @@ function verifyToken(req, res, next) {
     next();
   } catch (error) {
     // If the token is invalid, handle the error
-    return res.status(401).json({ auth: false, message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
 }

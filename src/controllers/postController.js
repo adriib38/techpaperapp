@@ -80,8 +80,6 @@ const deletePostById = async (req, res, next) => {
         return res.status(404).json({ message: "Post not found" });
       }
 
-      console.log("AAAA: ", results);
-
       // If the post was found, check if the author is the same as the user
       if (results.author_id !== authorUuid) {
         return res

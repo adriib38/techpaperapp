@@ -106,11 +106,38 @@ const getUserByUsername = async (req, res, next) => {
   });
 }
 
+const deleteUserByUuid = async (req, res, next) => {
+  // Check if the post author is the same as the user
+  const authorUuid = req.uuid;
+  const userParamId = req.params.uuid;
+
+  // Check if the uuid is received
+  if (!userParamId || !authorUuid) {
+    return res.status(400).json({ message: "Invalid inputs" });
+  }
+
+  
+  if (authorUuid !== userParamId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  User.deleteUserByUuid(userParamId, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error deleting user", error: err });
+    }
+
+    res.status(200).json({ message: "User deleted", user: results });
+  });
+}
 
 module.exports = {
   signup,
   signin,
   me,
   getUserByUuid,
-  getUserByUsername
+  getUserByUsername,
+  deleteUserByUuid
 };

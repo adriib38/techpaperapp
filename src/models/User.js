@@ -109,6 +109,25 @@ class User {
     });
   }
 
+  static deleteUserByUuid(uuid, callback) {
+    // Check if the uuid is received
+    if (!uuid) {
+      const error = new Error("Missing required fields");
+      console.error("Error deleting user:", error);
+      return callback(error, null);
+    }
+
+    // Get the user from the database
+    db.query("DELETE FROM user WHERE uuid = ?", [uuid], (err, results) => {
+      if (err) {
+        console.error("Error deleting user:", err);
+        callback(err, null);
+      } else {
+        callback(null, results[0]);
+      }
+    });
+  }
+
 }
 
 module.exports = User;

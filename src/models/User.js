@@ -90,6 +90,25 @@ class User {
     });
   }
 
+  static getUserByEmail(email, callback) {
+    // Check if the email is received
+    if (!email) {
+      const error = new Error("Missing required fields");
+      console.error("Error getting user:", error);
+      return callback(error, null);
+    }
+
+    // Get the user from the database
+    db.query("SELECT * FROM user WHERE email = ?", [email], (err, results) => {
+      if (err) {
+        console.error("Error getting user:", err);
+        callback(err, null);
+      } else {
+        callback(null, results[0]);
+      }
+    });
+  }
+
 }
 
 module.exports = User;

@@ -8,6 +8,8 @@ const router = express.Router();
 router
     .get("/all", postController.getAllPosts)
     .post("/create", verifyToken, postController.createPost)
-    .get("/user/:username", verifyToken, postController.getPostsByUsername);
+    .get("/user/:username", verifyToken, postController.getPostsByUsername)
+    .get("/:id", verifyToken, postController.getPostById)
+    .delete("/:id", verifyToken, postController.deletePostById);
 
 module.exports = router;

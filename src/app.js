@@ -1,10 +1,13 @@
 const express = require('express');
 const logger = require('morgan');
+const helmet = require('helmet');
 
 const app = express();
 const db = require('./database');
 
 app.use(logger('tiny'));
+
+app.use(helmet());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

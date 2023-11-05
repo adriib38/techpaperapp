@@ -66,7 +66,7 @@ const signin = async (req, res) => {
 // Return the user data from the token
 const me = async (req, res, next) => {
 
-  User.getUserById(req.uuid, (err, results) => {
+  User.getUserByUuid(req.uuid, (err, results) => {
     if (err) {
       // Send the error if there was one
       return res

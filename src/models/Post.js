@@ -10,7 +10,12 @@ class Post {
   }
 
   static getAllPosts(callback) {
-    db.query("SELECT * FROM post", (err, results) => {
+    db.query(`
+      SELECT p.title, p.content, p.created_at, p.author_id, COUNT(lp.id)
+      FROM 'post' p
+      JOIN likepost lp 
+      ON p.id = lp.post_id;`, 
+      (err, results) => {
       callback(err, results);
     });
   }

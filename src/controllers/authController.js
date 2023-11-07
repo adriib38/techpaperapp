@@ -37,13 +37,18 @@ const signup = async (req, res) => {
 
 const signin = async (req, res) => {
   const { email, password } = req.body;
-
+  
   User.getUserByEmail(email, async (err, results) => {
     if (err) {
       // Send the error if there was one
       return res
         .status(500)
         .json({ message: "Error getting user", error: err });
+    }
+
+    // If the user doesn't exist
+    if (!results) {
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Verify the password

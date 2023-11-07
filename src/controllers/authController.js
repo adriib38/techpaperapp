@@ -138,11 +138,26 @@ const deleteUserByUuid = async (req, res, next) => {
   });
 }
 
+const getUserProfileByUuid = async (req, res, next) => {
+  
+    User.getUserProfileByUuid(req.params.uuid, (err, results) => {
+      if (err) {
+        // Send the error if there was one
+        return res
+          .status(500)
+          .json({ message: "Error getting profile", error: err });
+      }
+  
+      res.status(200).json({ message: "User found", user: results, posts: '/post/v1/user/'+results.username });
+    });
+  }
+
 module.exports = {
   signup,
   signin,
   me,
   getUserByUuid,
   getUserByUsername,
-  deleteUserByUuid
+  deleteUserByUuid,
+  getUserProfileByUuid
 };

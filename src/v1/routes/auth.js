@@ -11,6 +11,7 @@ router
     .get("/me", verifyToken, authController.me)
     .get("/user/id/:uuid", authController.getUserByUuid)
     .get("/user/username/:username", verifyToken, authController.getUserByUsername)
+    .get("/user/profile/:uuid", verifyToken, authController.getUserProfileByUuid)
     .delete("/user/:uuid", verifyToken, authController.deleteUserByUuid),
 
 module.exports = router;

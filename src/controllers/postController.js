@@ -6,7 +6,7 @@ require("dotenv").config();
 const getAllPosts = async (req, res, next) => {
   Post.getAllPosts((err, results) => {
     if (err) {
-      res.status(500).send("Error retrieving posts from database");
+      res.status(500).json({ message: "Error getting posts", error: err });
     } else {
       res.status(200).json(results);
     }

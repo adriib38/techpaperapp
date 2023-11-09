@@ -4,14 +4,15 @@ const { v4: uuid } = require("uuid");
 class Post {
   constructor(post) {
     this.id = uuid();
-    this.title = post.username;
-    this.content = post.email;
+    this.title = post.title;
+    this.content = post.content;
+    this.categories = post.categories;
     this.author = post.author;
   }
 
   static getAllPosts(callback) {
     db.query(`
-      SELECT p.title, p.content, p.created_at, p.author_id, COUNT(lp.id) AS 'likes'
+      SELECT p.title, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes'
       FROM post p
       LEFT JOIN likepost lp 
       ON p.id = lp.post_id
@@ -43,17 +44,17 @@ class Post {
   }
 
   static createPost(post, callback) {
-    const { uuid, title, content, author } = post;
+    const { id, title, content, author } = post;
 
-    if (!uuid || !title || !content || !author) {
+    if (!id || !title || !content || !author) {
       const error = new Error("Missing required fields");
-      console.error("Error creating user:", error);
+      console.error("Error creating post:", error);
       return callback(error, null);
     }
 
     db.query(
-      "INSERT INTO post (uuid, title, content, author) VALUES (?, ?, ?, ?)",
-      [uuid, title, content, author],
+      "INSERT INTO post (id, title, content, author_id) VALUES (?, ?, ?, ?)",
+      [id, title, content, author],
       (err, results) => {
         if (err) {
           console.error("Error creating user:", err);
@@ -74,7 +75,7 @@ class Post {
     }
 
     db.query(
-      "SELECT username, title, content, PO.created_at FROM`post` PO JOIN `user` US ON PO.author_id = US.uuid WHERE US.username LIKE ?",
+      "SELECT username, title, content, categories, PO.created_at FROM `post` PO JOIN `user` US ON PO.author_id = US.uuid WHERE US.username LIKE ?",
       [username],
       (err, results) => {
         if (err) {
@@ -103,6 +104,29 @@ class Post {
         callback(null, results);
       }
     });
+  }
+
+  static getPostsByCategory(category, callback) {
+    if (!category) {
+      const error = new Error("Missing required fields");
+      console.error("Error getting post:", error);
+      return callback(error, null);
+    }
+
+    category = "%" + category + "%";
+
+    db.query(
+      "SELECT * FROM `post` WHERE categories LIKE ?",
+      [category],
+      (err, results) => {
+        if (err) {
+          console.error("Error getting post:", err);
+          callback(err, null);
+        } else {
+          callback(null, results);
+        }
+      }
+    );
   }
 }
 

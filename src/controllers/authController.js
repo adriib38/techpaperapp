@@ -120,7 +120,6 @@ const deleteUserByUuid = async (req, res, next) => {
   if (!userParamId || !authorUuid) {
     return res.status(400).json({ message: "Invalid inputs" });
   }
-
   
   if (authorUuid !== userParamId) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -148,7 +147,7 @@ const getUserProfileByUuid = async (req, res, next) => {
           .json({ message: "Error getting profile", error: err });
       }
   
-      res.status(200).json({ message: "User found", user: results, posts: '/post/v1/user/'+results.username });
+      res.status(200).json({ message: "Profile found", user: results, posts: '/post/v1/user/'+results.username });
     });
   }
 

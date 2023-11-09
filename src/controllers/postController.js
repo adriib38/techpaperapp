@@ -34,9 +34,7 @@ const getPostById = async (req, res, next) => {
 
 const createPost = async (req, res, next) => {
   const { title, content } = req.body;
-
   const author = req.uuid;
-
   const post = new Post({ title, content, author });
 
   Post.createPost(post, (err, results) => {
@@ -44,7 +42,7 @@ const createPost = async (req, res, next) => {
       console.error(err);
       res.status(500).send("Error creating post");
     } else {
-      res.status(200).json(results);
+      res.status(200).json({ message: "Post created" });
     }
   });
 };
@@ -58,7 +56,33 @@ const getPostsByUsername = async (req, res, next) => {
         .json({ message: "Error getting posts", error: err });
     }
 
-    res.status(200).json({ message: "Posts found", posts: results });
+    res
+      .status(200)
+      .json({
+        message: "Posts found",
+        username: req.params.username,
+        posts: results,
+      });
+  });
+};
+
+const getPostsByCategory = async (req, res, next) => {
+  req.params.category = req.params.category.split(" ")[0];
+  Post.getPostsByCategory(req.params.category, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error getting posts", error: err });
+    }
+
+    res
+      .status(200)
+      .json({
+        message: "Posts found",
+        category: req.params.category,
+        posts: results,
+      });
   });
 };
 
@@ -118,4 +142,5 @@ module.exports = {
   getPostsByUsername,
   getPostById,
   deletePostById,
+  getPostsByCategory,
 };

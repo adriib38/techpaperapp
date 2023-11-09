@@ -6,12 +6,12 @@ const verifyToken = require("../../controllers/middleware/verifyToken");
 const router = express.Router();
 
 router
+    .get("/me", verifyToken, authController.me)
+    .get("/user/:uuid", authController.getUserByUuid)
+    .get("/username/:username", verifyToken, authController.getUserByUsername)
+    .get("/profile/:uuid", verifyToken, authController.getUserProfileByUuid)
     .post("/signin", authController.signin)
     .post("/signup", authController.signup)
-    .get("/me", verifyToken, authController.me)
-    .get("/user/id/:uuid", authController.getUserByUuid)
-    .get("/user/username/:username", verifyToken, authController.getUserByUsername)
-    .get("/user/profile/:uuid", verifyToken, authController.getUserProfileByUuid)
     .delete("/user/:uuid", verifyToken, authController.deleteUserByUuid),
 
 module.exports = router;

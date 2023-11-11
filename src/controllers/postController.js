@@ -2,6 +2,8 @@ const Post = require("../models/Post");
 
 require("dotenv").config();
 
+const verifyPost = require("./middleware/verifyPost");
+
 // Get all posts
 const getAllPosts = async (req, res, next) => {
   Post.getAllPosts((err, results) => {
@@ -36,6 +38,12 @@ const createPost = async (req, res, next) => {
   const { title, content } = req.body;
   const author = req.uuid;
   const post = new Post({ title, content, author });
+
+  // Verify the post
+  const verificationResult = verifyPost(post);
+  if(verificationResult.error) {
+    return res.status(400).json({ "created": false, "message": verificationResult.message });
+  }
 
   Post.createPost(post, (err, results) => {
     if (err) {

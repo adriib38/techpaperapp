@@ -35,9 +35,9 @@ const getPostById = async (req, res, next) => {
 };
 
 const createPost = async (req, res, next) => {
-  const { title, content } = req.body;
+  const { title, content, categories } = req.body;
   const author = req.uuid;
-  const post = new Post({ title, content, author });
+  const post = new Post({ title, content, author, categories });
 
   // Verify the post
   const verificationResult = verifyPost(post);

@@ -44,17 +44,17 @@ class Post {
   }
 
   static createPost(post, callback) {
-    const { id, title, content, author } = post;
+    const { id, title, content, categories, author } = post;
 
-    if (!id || !title || !content || !author) {
+    if (!id || !title || !content || !author || !categories) {
       const error = new Error("Missing required fields");
       console.error("Error creating post:", error);
       return callback(error, null);
     }
 
     db.query(
-      "INSERT INTO post (id, title, content, author_id) VALUES (?, ?, ?, ?)",
-      [id, title, content, author],
+      "INSERT INTO post (id, title, content, categories, author_id) VALUES (?, ?, ?, ?, ?)",
+      [id, title, content, categories, author],
       (err, results) => {
         if (err) {
           console.error("Error creating user:", err);

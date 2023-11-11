@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 //Auth methods routes
 app.use("/auth/v1", require("./v1/routes/auth"));
 app.use("/post/v1", require("./v1/routes/post"));
+app.use("/user/v1", require("./v1/routes/user"));
 
 // Error handler
 app.use((req, res, next) => {

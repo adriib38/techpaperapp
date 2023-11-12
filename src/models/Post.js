@@ -14,11 +14,36 @@ class Post {
     db.query(`
       SELECT p.title, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes'
       FROM post p
-      LEFT JOIN likepost lp 
-      ON p.id = lp.post_id
+      LEFT JOIN likepost lp ON p.id = lp.post_id
       GROUP BY p.id;`, 
       (err, results) => {
       callback(err, results);
+    });
+  }
+
+  /*
+
+  */
+  static getWallPosts(user_uuid, callback) {
+    db.query(
+    `
+    SELECT DISTINCT
+    p.*, COUNT(lp.id) AS likes
+    FROM post p
+    LEFT JOIN FOLLOWS ON p.author_id = FOLLOWS.followed_uuid
+    LEFT JOIN likepost lp ON p.id = lp.post_id
+    WHERE follows.follower_uuid = ? OR p.author_id = ?
+    GROUP BY p.id
+    ORDER BY p.created_at ASC;
+    `,
+      [user_uuid, user_uuid],
+      (err, results) => {
+
+        if (err) {
+          return callback(err, null); // Handle the database query error
+        } else {
+          return callback(null, results);
+        }
     });
   }
 

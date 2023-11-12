@@ -8,9 +8,11 @@ const router = express.Router();
 router
     .get("/", postController.getAllPosts)
     .get("/user/:username", verifyToken, postController.getPostsByUsername)
-    .get("/:id", verifyToken, postController.getPostById)
+    .get("/posts/:id", verifyToken, postController.getPostById)
     .get("/category/:category", verifyToken, postController.getPostsByCategory)
     .post("/", verifyToken, postController.createPost)
-    .delete("/:id", verifyToken, postController.deletePostById);
+    .delete("/posts/:id", verifyToken, postController.deletePostById)
+    .get("/wall", verifyToken, postController.getWallPosts)
 
+    
 module.exports = router;

@@ -144,6 +144,20 @@ const deletePostById = async (req, res, next) => {
   }
 };
 
+const getWallPosts = async (req, res, next) => {
+  console.log("AABB", req.uuid);
+  Post.getWallPosts(req.uuid, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error getting wall posts", error: err });
+    }
+
+    res.status(200).json({ message: "Wall posts found", num_posts: results.length, posts: results });
+  });
+}
+
 module.exports = {
   getAllPosts,
   createPost,
@@ -151,4 +165,5 @@ module.exports = {
   getPostById,
   deletePostById,
   getPostsByCategory,
+  getWallPosts
 };

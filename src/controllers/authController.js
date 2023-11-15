@@ -3,10 +3,23 @@ const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
+const verifyUser = require("./middleware/verifyUser");
+
 // Register a new user in the database
 const signup = async (req, res) => {
   let { username, email, password } = req.body;
+
+  // Format the data
+  username = username.toLowerCase().trim().replace(/\s+/g, "");
+  email = email.toLowerCase().trim().replace(/\s+/g, "");
+  password = password.trim();
+
   const user = new User({ username, email, password });
+
+  const verificationResult = verifyUser(user);
+  if(verificationResult.error) {
+    return res.status(400).json({ "created": false, "message": verificationResult.message });
+  }
 
   // Encrypt the password
   password = await user.encryptPassword();
@@ -21,12 +34,12 @@ const signup = async (req, res) => {
       // Send the response if no error was thrown
       res
         .status(201)
-        .json({ message: "User created", user: user, token: token });
+        .json({ created: true, message: "User created", user: user, token: token });
     } else {
 
       // User already exists
       if (err.code === "ER_DUP_ENTRY") {
-        return res.status(409).json({ message: "User already exists" });
+        return res.status(409).json({ created: false, message: err.sqlMessage });
       }
 
       // Send the error if there was one

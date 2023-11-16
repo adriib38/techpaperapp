@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const Follow = require("../models/Follow");
-
-const jwt = require("jsonwebtoken");
+const Profile = require("../models/Profile");
 
 require("dotenv").config();
 
@@ -87,7 +86,6 @@ const getUserProfileByUuid = async (req, res, next) => {
       res.status(200).json({ message: "Profile found", user: results, posts: '/post/v1/user/'+results.username });
     });
 }
-
 
 const createFollow = async (req, res, next) => {
   const follow = new Follow({

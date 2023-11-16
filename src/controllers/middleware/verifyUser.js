@@ -23,12 +23,8 @@ function verifyUser(user) {
 
         result = { error: true, message: "Password must be between 8 and 25 characters" };
 
-    } else if (!email.match(regEx_Mail)) {
-            
-       result = { error: true, message: "Email must be a valid email address" };
-    
     }
-
+    
     return result;
 }
 

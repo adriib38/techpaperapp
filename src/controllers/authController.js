@@ -1,4 +1,7 @@
 const User = require("../models/User");
+const Profile = require("../models/Profile");
+const { insertProfile } = require("./profileController");
+
 const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
@@ -17,8 +20,10 @@ const signup = async (req, res) => {
   const user = new User({ username, email, password });
 
   const verificationResult = verifyUser(user);
-  if(verificationResult.error) {
-    return res.status(400).json({ "created": false, "message": verificationResult.message });
+  if (verificationResult.error) {
+    return res
+      .status(400)
+      .json({ created: false, message: verificationResult.message });
   }
 
   // Encrypt the password
@@ -30,27 +35,45 @@ const signup = async (req, res) => {
       let token = jwt.sign({ id: user.uuid }, process.env.JWT_SECRET, {
         expiresIn: 60 * 60 * 24 * 30, // 30 days
       });
-
-      // Send the response if no error was thrown
-      res
-        .status(201)
-        .json({ created: true, message: "User created", user: user, token: token });
+  
+      // Create a profile for the user
+      const profile = new Profile({ user_uuid: user.uuid, name: "tempName" });
+      insertProfile(profile)
+        .then(() => {
+          res
+            .status(201)
+            .json({
+              created: true,
+              message: "User and profile created",
+              user: user,
+              profile: profile,
+              token: token
+            });
+        })
+        .catch((err) => {
+          // Send the error if there was one while creating the profile
+          res
+            .status(500)
+            .json({ message: "Error creating profile", error: err });
+        });
     } else {
-
       // User already exists
       if (err.code === "ER_DUP_ENTRY") {
-        return res.status(409).json({ created: false, message: err.sqlMessage });
+        return res
+          .status(409)
+          .json({ created: false, message: err.sqlMessage });
       }
-
-      // Send the error if there was one
+  
+      // Send the error if there was one while creating the user
       res.status(500).json({ message: "Error creating user", error: err });
     }
   });
+  
 };
 
 const signin = async (req, res) => {
   const { email, password } = req.body;
-  
+
   User.getUserByEmail(email, async (err, results) => {
     if (err) {
       // Send the error if there was one
@@ -80,7 +103,6 @@ const signin = async (req, res) => {
     }
   });
 };
-
 
 module.exports = {
   signup,

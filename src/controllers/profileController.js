@@ -18,7 +18,6 @@ const me = async (req, res, next) => {
   });
 }
 
-
 const createProfile = async (req, res, next) => {
   const { name, bio } = req.body;
 

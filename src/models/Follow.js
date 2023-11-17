@@ -58,6 +58,63 @@ class Follow {
     );
   }
 
+  /**
+   * Return users followed by a user in param
+   * Users following the user in param
+   */
+  static getUserFollowed(user_uuid, callback) {
+    // Check if the email is received
+    if (!user_uuid) {
+      const error = new Error("Missing required fields");
+      console.error("Error getting followers:", error);
+      return callback(error, null);
+    }
+
+    db.query(
+      `
+      SELECT USR.username, PRO.name, PRO.bio, FOL.created_at AS 'follow_since'
+      FROM follows FOL
+      JOIN profile PRO ON PRO.user_uuid = FOL.followed_uuid
+      JOIN user USR ON USR.uuid = FOL.followed_uuid
+      WHERE FOL.follower_uuid = ?
+      `
+      , 
+      [user_uuid], (err, results) => {
+        if (err) {
+          console.error("Error getting followeds:", err);
+          callback(err, null);
+        } else {
+          callback(null, results);
+        }
+    });
+  }
+
+  static getUserFollowers(user_uuid, callback) {
+    // Check if the email is received
+    if (!user_uuid) {
+      const error = new Error("Missing required fields");
+      console.error("Error getting followers:", error);
+      return callback(error, null);
+    }
+
+    db.query(
+      `
+      SELECT USR.username, PRO.name, PRO.bio, FOL.created_at AS 'follow_since' 
+      FROM follows FOL 
+      JOIN profile PRO ON PRO.user_uuid = FOL.follower_uuid 
+      JOIN user USR ON USR.uuid = FOL.follower_uuid 
+      WHERE FOL.followed_uuid = ?; 
+      `
+      , 
+      [user_uuid], (err, results) => {
+      if (err) {
+        console.error("Error getting followers:", err);
+        callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
+  }
 
   /*
   static getUserByUuid(uuid, callback) {  

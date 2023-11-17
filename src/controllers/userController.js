@@ -125,6 +125,63 @@ const deleteFollow = async (req, res, next) => {
   
 }
 
+/**
+ * Return users following the user in param
+ * user follow X users
+ */
+const getFollowsByUuid = async (req, res, next) => {
+  if(!req.params.uuid) {
+    return res.status(400).json({ message: "Invalid inputs" });
+  }
+
+  
+  Follow.getUserFollowed(req.params.uuid, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error getting follows", error: err });
+    }
+
+    if (results.length === 0) {
+      res.status(200).json({ message: "No Follows found", n_followers: results.length });
+    }
+
+    if (results.length > 0) {
+      res.status(200).json({ message: "Follows found", n_followers: results.length, follows: results });
+    }
+  });
+  
+}
+
+/**
+ * Return users followed by the user in param
+ * user is followd by X users
+ */
+const getFollowersByUuid = async (req, res, next) => {
+  if(!req.params.uuid) {
+    return res.status(400).json({ message: "Invalid inputs" });
+  }
+
+  Follow.getUserFollowers(req.params.uuid, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error getting followers", error: err });
+    }
+
+    if (results.length === 0) {
+      res.status(200).json({ message: "No followers found", n_followers: results.length });
+    }
+
+    if (results.length > 0) {
+      res.status(200).json({ message: "Followers found", n_followers: results.length, followers: results });
+    }
+  });
+  
+}
+
 module.exports = {
   me,
   getUserByUuid,
@@ -132,5 +189,7 @@ module.exports = {
   deleteUserByUuid,
   getUserProfileByUuid,
   createFollow,
-  deleteFollow
+  deleteFollow,
+  getFollowsByUuid,
+  getFollowersByUuid
 };

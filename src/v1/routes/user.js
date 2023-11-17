@@ -12,6 +12,8 @@ router
     .get("/profile/:uuid", verifyToken, userController.getUserProfileByUuid)
     .delete("/user/:uuid", verifyToken, userController.deleteUserByUuid)
     .post("/follow", verifyToken, userController.createFollow)
-    .delete("/follow", verifyToken, userController.deleteFollow);
+    .delete("/follow", verifyToken, userController.deleteFollow)
+    .get("/follows/:uuid", verifyToken, userController.getFollowsByUuid)
+    .get("/followers/:uuid", verifyToken, userController.getFollowersByUuid);
 
 module.exports = router;

@@ -145,7 +145,6 @@ const deletePostById = async (req, res, next) => {
 };
 
 const getWallPosts = async (req, res, next) => {
-  console.log("AABB", req.uuid);
   Post.getWallPosts(req.uuid, (err, results) => {
     if (err) {
       // Send the error if there was one

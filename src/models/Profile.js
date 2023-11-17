@@ -40,16 +40,15 @@ class Profile {
     }
 
     db.query(
-      "SELECT * FROM profile WHERE user_uuid = ?",
+      "SELECT USR.username, USR.email, PRO.name, PRO.bio, USR.created_at FROM profile PRO JOIN user USR ON PRO.user_uuid = USR.uuid WHERE PRO.user_uuid = ?",
       [uuid],
       (err, results) => {
         if (err) {
-          console.error("Error getting user profile:", err);
-          callback(err, null);
-        } else if(results.length === 0) {
-          callback(err, null);
+          return callback(err, null);
+        } else if (results && results.length > 0) {
+          return callback(null, results[0]);
         } else {
-          callback(null, results);
+          return callback(err, null);
         }
       }
     )

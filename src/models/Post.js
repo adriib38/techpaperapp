@@ -21,9 +21,6 @@ class Post {
     });
   }
 
-  /*
-
-  */
   static getWallPosts(user_uuid, callback) {
     db.query(
     `

@@ -14,7 +14,7 @@ const me = async (req, res, next) => {
         .json({ message: "Error getting user", error: err });
     }
 
-    res.status(200).json({ message: "User found", user: results });
+    res.status(200).json({ message: "Profile found", profile: results });
   });
 }
 

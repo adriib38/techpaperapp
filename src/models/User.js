@@ -29,7 +29,6 @@ class User {
       return callback(error, null);
     }
 
-
     db.query(
       "INSERT INTO user (uuid, username, email, password) VALUES (?, ?, ?, ?)",
       [uuid, username, email, password],
@@ -51,7 +50,6 @@ class User {
   }
 
   static getUserByUuid(uuid, callback) {  
-
     // Check if the uuid is received
     if (!uuid) {
       const error = new Error("Missing required fields");
@@ -121,33 +119,6 @@ class User {
     db.query("DELETE FROM user WHERE uuid = ?", [uuid], (err, results) => {
       if (err) {
         console.error("Error deleting user:", err);
-        callback(err, null);
-      } else {
-        callback(null, results[0]);
-      }
-    });
-  }
-
-  static getUserProfileByUuid(uuid, callback) {
-    // Check if the uuid is received
-    if (!uuid) {
-      const error = new Error("Missing required fields");
-      console.error("Error getting profile:", error);
-      return callback(error, null);
-    }
-
-    // Get the user from the database
-    db.query(
-      `
-      SELECT us.uuid, us.username, pr.name, pr.bio, us.email, COUNT(p.id) AS posts 
-      FROM profile pr
-      JOIN user us ON pr.user_uuid = us.uuid
-      JOIN post p ON p.author_id = us.uuid
-      WHERE us.uuid = ?;
-      `,
-    [uuid], (err, results) => {
-      if (err) {
-        console.error("Error getting user:", err);
         callback(err, null);
       } else {
         callback(null, results[0]);

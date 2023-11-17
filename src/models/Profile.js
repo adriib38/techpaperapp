@@ -33,14 +33,20 @@ class Profile {
   }
 
   static getUserProfileByUuid(uuid, callback) {
-    if(!uuid || uuid === "") {
+    if (!uuid || uuid === "") {
       const error = new Error("Missing required fields");
       console.error("Error getting user profile:", error);
       return callback(error, null);
     }
 
     db.query(
-      "SELECT USR.username, USR.email, PRO.name, PRO.bio, USR.created_at FROM profile PRO JOIN user USR ON PRO.user_uuid = USR.uuid WHERE PRO.user_uuid = ?",
+      `
+      SELECT USR.username, USR.email, PRO.name, PRO.bio, USR.created_at, COUNT(POS.id) AS 'n_posts'
+      FROM profile PRO 
+      JOIN user USR ON PRO.user_uuid = USR.uuid
+      JOIN post POS ON USR.uuid = POS.author_id
+      WHERE PRO.user_uuid = ?
+      `,
       [uuid],
       (err, results) => {
         if (err) {
@@ -51,7 +57,7 @@ class Profile {
           return callback(err, null);
         }
       }
-    )
+    );
   }
 }
 

@@ -10,10 +10,11 @@ const verifyUser = require("./middleware/verifyUser");
 
 // Register a new user in the database
 const signup = async (req, res) => {
-  let { username, email, password } = req.body;
+  let { username, name, email, password } = req.body;
 
   // Format the data
   username = username.toLowerCase().trim().replace(/\s+/g, "");
+  name = name.trim();
   email = email.toLowerCase().trim().replace(/\s+/g, "");
   password = password.trim();
 
@@ -37,7 +38,7 @@ const signup = async (req, res) => {
       });
   
       // Create a profile for the user
-      const profile = new Profile({ user_uuid: user.uuid, name: "tempName" });
+      const profile = new Profile({ user_uuid: user.uuid, name: name });
       insertProfile(profile)
         .then(() => {
           res

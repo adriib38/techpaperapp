@@ -2,8 +2,7 @@ function verifyUser(user) {
     let regEx_Mail = '/\S+@\S+\.\S+/';
 
 
-
-    let { email, username, password } = user;
+    let { email, username, name, password } = user;
 
     let result = { error: false, message: "" };
   

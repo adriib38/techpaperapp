@@ -157,6 +157,26 @@ const getWallPosts = async (req, res, next) => {
   });
 }
 
+const searchPosts = async (req, res, next) => {
+ 
+  Post.getSearchPost(req.params.search, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error getting posts", error: err });
+    }
+
+    if(results.length === 0) {
+      res.status(404).json({ message: "No posts found" });
+    }
+
+    if(results.length > 0) {
+      res.status(200).json({ message: "Posts found", n_posts: results.length, posts: results });
+    }
+  });
+}
+
 module.exports = {
   getAllPosts,
   createPost,
@@ -164,5 +184,6 @@ module.exports = {
   getPostById,
   deletePostById,
   getPostsByCategory,
-  getWallPosts
+  getWallPosts,
+  searchPosts
 };

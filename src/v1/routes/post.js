@@ -13,6 +13,7 @@ router
     .post("/", verifyToken, postController.createPost)
     .delete("/posts/:id", verifyToken, postController.deletePostById)
     .get("/wall", verifyToken, postController.getWallPosts)
+    .get("/search/:search", verifyToken, postController.searchPosts)
 
     
 module.exports = router;

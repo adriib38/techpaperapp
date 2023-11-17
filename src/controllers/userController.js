@@ -133,7 +133,6 @@ const getFollowsByUuid = async (req, res, next) => {
   if(!req.params.uuid) {
     return res.status(400).json({ message: "Invalid inputs" });
   }
-
   
   Follow.getUserFollowed(req.params.uuid, (err, results) => {
     if (err) {
@@ -151,7 +150,6 @@ const getFollowsByUuid = async (req, res, next) => {
       res.status(200).json({ message: "Follows found", n_followers: results.length, follows: results });
     }
   });
-  
 }
 
 /**

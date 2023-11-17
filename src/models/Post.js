@@ -1,5 +1,6 @@
 const db = require("../database");
 const { v4: uuid } = require("uuid");
+const { search } = require("../v1/routes/post");
 
 class Post {
   constructor(post) {
@@ -138,7 +139,7 @@ class Post {
     category = "%" + category + "%";
 
     db.query(
-      "SELECT * FROM `post` WHERE categories LIKE ?",
+      "SELECT * FROM post WHERE categories LIKE ?",
       [category],
       (err, results) => {
         if (err) {
@@ -150,6 +151,36 @@ class Post {
       }
     );
   }
+
+  static getSearchPost(search, callback) {
+    if (!search) {
+      const error = new Error("Missing required fields");
+      return callback(error, null);
+    }
+  
+    search = "%" + search + "%";
+  
+    db.query(
+      `
+      SELECT post.id, post.title, post.content, post.created_at, profile.name, user.username, COUNT(likepost.id) AS likes
+      FROM post 
+      JOIN user ON post.author_id = user.uuid
+      JOIN profile ON user.uuid = profile.user_uuid
+      LEFT JOIN likepost ON post.id = likepost.post_id
+      WHERE post.title LIKE ?
+      `,
+      [search],
+      (err, results) => {
+        if (err) {
+          console.error("Error getting post:", err);
+          return callback(err, null);
+        }
+  
+        callback(null, results);
+      }
+    );
+  }
+  
 }
 
 module.exports = Post;

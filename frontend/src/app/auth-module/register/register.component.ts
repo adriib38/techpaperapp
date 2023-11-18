@@ -50,7 +50,7 @@ export class RegisterComponent {
       (data) => {
         console.log('Registro exitoso:', data);
         // Login
-        this.authService.login(data.token);
+        this.authService.saveToken(data.token);
         console.log('Login exitoso:', data.token);
         this.router.navigate(['/']);
       },

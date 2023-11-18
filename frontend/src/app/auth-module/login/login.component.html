@@ -1,9 +1,11 @@
 <h2>Login</h2>
 
+{{ errorMessages | json }}
+
 <form [formGroup]="loginForm" (submit)="submit()">
     <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" formControlName="username" id="username" placeholder="Username">
+        <label for="email">Username</label>
+        <input type="email" class="form-control" formControlName="email" id="email" placeholder="Esername">
     </div>
     <div class="form-group">
         <label for="password">Password</label>

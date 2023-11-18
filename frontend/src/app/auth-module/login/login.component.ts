@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
+import { LoginCredentials } from 'src/app/Interfaces/login-credentials';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   isLoggedIn: boolean | undefined;
+  errorMessages: string[] = [];
 
   constructor(
     private authService: AuthService,
@@ -19,7 +21,7 @@ export class LoginComponent {
   }
 
   loginForm = new FormGroup({
-    username: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   });
 
@@ -31,13 +33,28 @@ export class LoginComponent {
       return;
     } 
 
-    this.login();
+    let loginCredentials: LoginCredentials = {
+      email: this.loginForm.value.email || '',
+      password: this.loginForm.value.password || ''
+    };
+
+    this.login(loginCredentials);
   }
 
-  login(): void {
-    //this.authService.login(authToken);
-    this.isLoggedIn = true;
-    this.router.navigate(['/']);
+  login(loginCredentials: LoginCredentials): void {
+      this.authService.login(loginCredentials).subscribe(
+        (data) => {
+          console.log('Login exitoso:', data);
+          this.authService.saveToken(data.token);
+          // Login
+          this.router.navigate(['/']);
+        },
+        (error) => {
+          console.error('Error durante el login:', error);
+          this.errorMessages = error.error.message;
+        }
+      );
+    
   }
 
   ngOnInit() {

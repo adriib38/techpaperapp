@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../Interfaces/User';
+import { LoginCredentials } from '../Interfaces/login-credentials';
 
 @Injectable({
   providedIn: 'root',
@@ -31,10 +32,18 @@ export class AuthService {
     return this.http.post(url, body);
   }
 
-  login(authToken: string): void {
-    // Save token in local storage
-    localStorage.setItem('authToken', authToken);
-  
+  login(credentials: LoginCredentials): Observable<any> {
+    let body = {
+      email: credentials.email,
+      password: credentials.password
+    };
+
+    const url = `${this.apiUrl}/signin`;
+    return this.http.post(url, body);
+  }
+
+  saveToken(token: string): void {
+    localStorage.setItem('authToken', token);
     this.isAuthenticatedSubject.next(true);
   }
 
@@ -51,6 +60,6 @@ export class AuthService {
     if (authToken) {
       this.isAuthenticatedSubject.next(true);
     }
-
   }
+
 }

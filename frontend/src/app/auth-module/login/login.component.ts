@@ -15,7 +15,7 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router
   ) {
-    this.isLoggedIn = authService.isAuthenticated();
+
   }
 
   loginForm = new FormGroup({
@@ -34,8 +34,8 @@ export class LoginComponent {
     this.login();
   }
 
-  login() {
-    this.authService.login();
+  login(): void {
+    //this.authService.login(authToken);
     this.isLoggedIn = true;
     this.router.navigate(['/']);
   }

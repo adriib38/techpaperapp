@@ -13,7 +13,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000/auth/v1';
 
   constructor(private http: HttpClient) {
-
+    this.checkAuthenticationStatus();
   }
 
   // Return Observable with user data OR error
@@ -31,15 +31,26 @@ export class AuthService {
     return this.http.post(url, body);
   }
 
-  login(): void {
+  login(authToken: string): void {
+    // Save token in local storage
+    localStorage.setItem('authToken', authToken);
+  
     this.isAuthenticatedSubject.next(true);
   }
 
   logout(): void {
+    // Remove token from local storage
+    localStorage.removeItem('authToken');
+    
     this.isAuthenticatedSubject.next(false);
   }
 
-  isAuthenticated(): boolean {
-    return this.isAuthenticatedSubject.value;
+  private checkAuthenticationStatus(): void {
+    // Verificar si hay un token almacenado al inicializar el servicio
+    const authToken = localStorage.getItem('authToken');
+    if (authToken) {
+      this.isAuthenticatedSubject.next(true);
+    }
+
   }
 }

@@ -17,11 +17,12 @@ export class RegisterComponent {
     private authService: AuthService,
     private router: Router
   ) {
-    this.isLoggedIn = authService.isAuthenticated();
+
   }
 
   registerForm = new FormGroup({
     username: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required)
   });
@@ -36,7 +37,7 @@ export class RegisterComponent {
 
     let user: User = {
       username: this.registerForm.value.username || '',
-      name: this.registerForm.value.username || '',
+      name: this.registerForm.value.name || '',
       email: this.registerForm.value.email || '',
       password: this.registerForm.value.password || ''
     };
@@ -49,9 +50,8 @@ export class RegisterComponent {
       (data) => {
         console.log('Registro exitoso:', data);
         // Login
-
-        this.authService.login();
-
+        this.authService.login(data.token);
+        console.log('Login exitoso:', data.token);
         this.router.navigate(['/']);
       },
       (error) => {

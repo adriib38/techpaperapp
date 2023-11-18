@@ -17,15 +17,19 @@ export class HomeComponent {
     private router: Router,
 
   ) {
-    this.isLoggedIn = authService.isAuthenticated();
 
     // Subscribe to the authentication state
     this.authSubscription = authService.isAuthenticated$.subscribe((authenticated) => {
       this.isLoggedIn = authenticated;
     });
+    
   }
 
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
+  }
+  
+  ngOnInit() {
+    console.log("Authenticated: " + this.isLoggedIn);
   }
 }

@@ -41,18 +41,18 @@ export class LoginComponent {
   }
 
   login(loginCredentials: LoginCredentials): void {
-      this.authService.login(loginCredentials).subscribe(
-        (data) => {
-          console.log('Login exitoso:', data);
-          this.authService.saveToken(data.token);
-          // Login
-          this.router.navigate(['/']);
-        },
-        (error) => {
-          console.error('Error durante el login:', error);
-          this.errorMessages = error.error.message;
-        }
-      );
+    this.authService.login(loginCredentials).subscribe(
+      (data) => {
+        console.log('Login exitoso:', data);
+        this.authService.saveToken(data.token);
+        // Login
+        this.router.navigate(['/']);
+      },
+      (error) => {
+        console.error('Error durante el login:', error);
+        this.errorMessages = error.error.message;
+      }
+    );
     
   }
 

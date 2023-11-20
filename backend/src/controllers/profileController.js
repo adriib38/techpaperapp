@@ -21,8 +21,10 @@ const me = async (req, res, next) => {
 // Return the user data from the token
 const getProfileByUsername = async (req, res, next) => {
   let { username } = req.params;
-console.log("username", username);
+  console.log("username", username);
+
   Profile.getProfileByUsername(username, (err, results) => {
+    console.log("results", res.length);
     if (err) {
       // Send the error if there was one
       return res
@@ -30,10 +32,10 @@ console.log("username", username);
         .json({ message: "Error getting profile", error: err });
     }
 
+
     if (!results) {
       return res.status(404).json({ message: "Profile not found" });
     }
-
     res.status(200).json({ message: "Profile found", profile: results });
 
   });

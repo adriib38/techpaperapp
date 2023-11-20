@@ -5,14 +5,15 @@ import { RegisterComponent } from './auth-module/register/register.component';
 import { LoginComponent } from './auth-module/login/login.component';
 import { LogoutComponent } from './auth-module/logout/logout.component';
 import { ProfileComponent } from './profile/profile.component';
-import { AuthGuard } from './middlewares/auth-guard.component';
+import { AuthGuard, NoAuthGuard } from './middlewares/auth-guard.component';
+
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
-  { path: 'logout', component: LogoutComponent },
-  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
-  { path: 'profile/:username', component: ProfileComponent },
+  { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
+  { path: 'profile/:username', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 
 ];

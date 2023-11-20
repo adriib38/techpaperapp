@@ -32,7 +32,7 @@ class Profile {
     );
   }
 
-  static getUserProfileByUuid(uuid, callback) {
+  static getProfileByUuid(uuid, callback) {
     if (!uuid || uuid === "") {
       const error = new Error("Missing required fields");
       console.error("Error getting user profile:", error);
@@ -55,6 +55,32 @@ class Profile {
           return callback(null, results[0]);
         } else {
           return callback(err, null);
+        }
+      }
+    );
+  }
+
+  static getProfileByUsername(username, callback) {
+    if (!username || username === "") {
+      const error = new Error("Missing required fields");
+      console.error("Error getting profile:", error);
+      return callback(error, null);
+    }
+
+    db.query(
+      `
+      SELECT USR.username, USR.email, PRO.name, PRO.bio, USR.created_at, COUNT(POS.id) AS 'n_posts'
+      FROM profile PRO 
+      JOIN user USR ON PRO.user_uuid = USR.uuid
+      JOIN post POS ON USR.uuid = POS.author_id
+      WHERE USR.username = ?
+      `,
+      [username],
+      (err, results) => {
+        if (err) {
+          return callback(err, null);
+        } else {
+          return callback(null, results[0]);
         }
       }
     );

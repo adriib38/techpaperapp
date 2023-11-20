@@ -7,5 +7,6 @@ const router = express.Router();
 
 router
     .get("/me", verifyToken, profileController.me)  
+    .get("/u/:username", profileController.getProfileByUsername)
 
 module.exports = router;

@@ -6,15 +6,36 @@ require("dotenv").config();
 // Return the user data from the token
 const me = async (req, res, next) => {
 
-  Profile.getUserProfileByUuid(req.uuid, (err, results) => {
+  Profile.getProfileByUuid(req.uuid, (err, results) => {
     if (err) {
       // Send the error if there was one
       return res
         .status(500)
-        .json({ message: "Error getting user", error: err });
+        .json({ message: "Error getting profile", error: err });
     }
 
     res.status(200).json({ message: "Profile found", profile: results });
+  });
+}
+
+// Return the user data from the token
+const getProfileByUsername = async (req, res, next) => {
+  let { username } = req.params;
+console.log("username", username);
+  Profile.getProfileByUsername(username, (err, results) => {
+    if (err) {
+      // Send the error if there was one
+      return res
+        .status(500)
+        .json({ message: "Error getting profile", error: err });
+    }
+
+    if (!results) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    res.status(200).json({ message: "Profile found", profile: results });
+
   });
 }
 
@@ -53,5 +74,6 @@ function insertProfile (profile) {
 module.exports = {
   me,
   createProfile,
-  insertProfile
+  insertProfile,
+  getProfileByUsername
 };

@@ -191,9 +191,9 @@ module.exports = {
   getUserByUuid,
   getUserByUsername,
   deleteUserByUuid,
-  getUserProfileByUuid,
   createFollow,
   deleteFollow,
   getFollowsByUuid,
-  getFollowersByUuid
+  getFollowersByUuid,
+  getUserProfileByUuid
 };

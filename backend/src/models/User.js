@@ -81,9 +81,9 @@ class User {
     db.query("SELECT * FROM user WHERE username = ?", [username], (err, results) => {
       if (err) {
         console.error("Error getting user:", err);
-        callback(err, null);
+        return callback(err, null);
       } else {
-        callback(null, results[0]);
+        return callback(null, results);
       }
     });
   }

@@ -43,7 +43,13 @@ const getUserByUsername = async (req, res, next) => {
         .json({ message: "Error getting user", error: err });
     }
 
-    res.status(200).json({ message: "User found", user: results });
+    if (results.length === 0) {
+      res.status(200).json({ message: "User not found" });
+    }
+
+    if (results.length > 0) {
+      res.status(200).json({ message: "User found", user: results[0] });
+    }
   });
 }
 

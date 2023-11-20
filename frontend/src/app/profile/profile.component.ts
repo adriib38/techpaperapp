@@ -25,10 +25,11 @@ export class ProfileComponent implements OnInit {
     this.profileService.getProfileByUsername(this.username).subscribe(
       (data) => {
         console.log('Profile exitoso:', data.profile);
+        document.body.innerHTML += JSON.stringify(data.profile);
       },
       (error) => {
         console.error('Error obteniendo el perfil:', error);
-  
+        document.body.innerHTML += JSON.stringify(error);
       }
     );
   }

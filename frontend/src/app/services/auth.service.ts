@@ -3,18 +3,35 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../Interfaces/User';
 import { LoginCredentials } from '../Interfaces/login-credentials';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
+  public isAuthenticated$: Observable<boolean> =
+    this.isAuthenticatedSubject.asObservable();
 
+  // Token
+  private authTokenSubject = new BehaviorSubject<string | null>(
+    this.getStoredAuthToken()
+  );
+  public authToken$: Observable<string | null> =
+    this.authTokenSubject.asObservable();
+
+
+    
   private apiUrl = 'http://localhost:3000/auth/v1';
+  
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
+
     this.checkAuthenticationStatus();
+
   }
 
   // Return Observable with user data OR error
@@ -23,7 +40,7 @@ export class AuthService {
       username: user.username,
       name: user.name,
       email: user.email,
-      password: user.password
+      password: user.password,
     };
 
     console.log('body', body);
@@ -35,11 +52,18 @@ export class AuthService {
   login(credentials: LoginCredentials): Observable<any> {
     let body = {
       email: credentials.email,
-      password: credentials.password
+      password: credentials.password,
     };
 
     const url = `${this.apiUrl}/signin`;
     return this.http.post(url, body);
+  }
+
+  logout(): void {
+    // Remove token from local storage
+    localStorage.removeItem('authToken');
+
+    this.isAuthenticatedSubject.next(false);
   }
 
   saveToken(token: string): void {
@@ -47,11 +71,29 @@ export class AuthService {
     this.isAuthenticatedSubject.next(true);
   }
 
-  logout(): void {
-    // Remove token from local storage
-    localStorage.removeItem('authToken');
-    
-    this.isAuthenticatedSubject.next(false);
+  // Set token in local storage
+  setAuthToken(token: string | null): void {
+    if (token) {
+      localStorage.setItem('authToken', token);
+    } else {
+      localStorage.removeItem('authToken');
+    }
+    this.authTokenSubject.next(token);
+  }
+
+  // Get token from local storage
+  getAuthToken(): string | null {
+    return this.authTokenSubject.value;
+  }
+
+  private getStoredAuthToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
+
+  redirectToLoginIfNotAuthenticated(): void {
+    if (!this.getAuthToken()) {
+      this.router.navigate(['/login']);
+    }
   }
 
   private checkAuthenticationStatus(): void {
@@ -61,5 +103,4 @@ export class AuthService {
       this.isAuthenticatedSubject.next(true);
     }
   }
-
 }

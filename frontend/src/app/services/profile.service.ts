@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../Interfaces/User';
-import { LoginCredentials } from '../Interfaces/login-credentials';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +10,17 @@ export class ProfileService {
   private apiUrl = 'http://localhost:3000/profile/v1';
 
   constructor(private http: HttpClient) {
+
+  }
+
+  // Return Observable with user data OR error
+  getProfileByToken(token: string): Observable<any> {
+    console.log('token type: ', typeof token);
+    const url = `${this.apiUrl}/me`;
+    
+    //Bearer in the header is the type of authentication
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(url, { headers });
 
   }
 

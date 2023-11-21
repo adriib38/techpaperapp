@@ -4,6 +4,7 @@
         <li *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
         <li *ngIf="!isLoggedIn"><a routerLink="/register">Registro</a></li>
         <li *ngIf="isLoggedIn"><a routerLink="/logout">Logout</a></li>
+        <li *ngIf="isLoggedIn"><a routerLink="/profile/{{ profileUsername }}">Perfil</a></li>
     </ul>
 </nav>
   

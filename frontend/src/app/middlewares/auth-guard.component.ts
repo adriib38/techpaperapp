@@ -11,7 +11,7 @@ export class AuthGuard {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     // If the user is not logged in we'll send them back to the home page
-    if (this.authService.isAuthenticated$) {
+    if (!this.authService.isAuthenticated$) {
       console.warn('Access denied!');
       this.router.navigate(['/']);
       return false;
@@ -30,7 +30,7 @@ export class NoAuthGuard {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     // If the user is not logged in we'll send them back to the home page
-    if (!this.authService.isAuthenticated$) {
+    if (this.authService.isAuthenticated$) {
       console.warn('Access denied!');
       this.router.navigate(['/']);
       return false;

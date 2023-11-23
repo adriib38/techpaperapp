@@ -1,19 +1,25 @@
-<h1>TechPaper</h1>
-
 <div *ngIf="isLoggedIn; else notLoggedInContent">
-
 
     Authenticated
 
+<div id="new-posts">
+    <h2>New Post for you</h2>
     <section id="posts">
-
+        <article *ngFor="let post of postsList" class="post">
+            <span>{{post.time_ago}}</span>
+            <h2>{{post.title}}</h2>        
+            <p>{{post.content}}</p>
+            <span>{{post.created_at}}</span>
+        </article>
     </section>
+</div>
     
 
 </div>
 
 <ng-template #notLoggedInContent>
-    <!-- Contenido para usuarios no autenticados -->
-    <h1>Bienvenido, visitante. Inicia sesión para acceder a más contenido.</h1>
-    <!-- ... Otro contenido específico para usuarios no autenticados ... -->
+    
+    <h1>Welcome to TechPaper</h1>
+    <p>Sign up or login to view posts</p>
+
 </ng-template>

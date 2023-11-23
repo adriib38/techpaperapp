@@ -1,13 +1,19 @@
 <h1>TechPaper</h1>
 
-<p *ngIf="isLoggedIn">
+<div *ngIf="isLoggedIn; else notLoggedInContent">
+
+
     Authenticated
-</p> 
 
-<p *ngIf="!isLoggedIn">
-    Not Authenticated
-</p>
+    <section id="posts">
 
-<section id="posts">
+    </section>
+    
 
-</section>
+</div>
+
+<ng-template #notLoggedInContent>
+    <!-- Contenido para usuarios no autenticados -->
+    <h1>Bienvenido, visitante. Inicia sesión para acceder a más contenido.</h1>
+    <!-- ... Otro contenido específico para usuarios no autenticados ... -->
+</ng-template>

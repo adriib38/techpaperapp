@@ -10,21 +10,17 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public isAuthenticated$: Observable<boolean> =
-    this.isAuthenticatedSubject.asObservable();
+  public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
 
   // Token
   private authTokenSubject = new BehaviorSubject<string | null>(
     this.getStoredAuthToken()
   );
-  public authToken$: Observable<string | null> =
-    this.authTokenSubject.asObservable();
 
-
+  public authToken$: Observable<string | null> = this.authTokenSubject.asObservable();
     
   private apiUrl = 'http://localhost:3000/auth/v1';
   
-
   constructor(
     private http: HttpClient,
     private router: Router
@@ -56,13 +52,13 @@ export class AuthService {
     };
 
     const url = `${this.apiUrl}/signin`;
+
     return this.http.post(url, body);
   }
 
   logout(): void {
     // Remove token from local storage
     localStorage.removeItem('authToken');
-
     this.isAuthenticatedSubject.next(false);
   }
 
@@ -75,15 +71,24 @@ export class AuthService {
   setAuthToken(token: string | null): void {
     if (token) {
       localStorage.setItem('authToken', token);
+      this.isAuthenticatedSubject.next(true);
     } else {
       localStorage.removeItem('authToken');
+      this.isAuthenticatedSubject.next(false);
     }
     this.authTokenSubject.next(token);
-  }
+  }  
 
   // Get token from local storage
   getAuthToken(): string | null {
-    return this.authTokenSubject.value;
+    if (this.authTokenSubject) {
+      return this.authTokenSubject.value;
+    } else {
+      console.warn('No token found');
+      //Redirect to login
+      this.router.navigate(['/login']);
+      return null;
+    }
   }
 
   private getStoredAuthToken(): string | null {
@@ -101,6 +106,8 @@ export class AuthService {
     const authToken = localStorage.getItem('authToken');
     if (authToken) {
       this.isAuthenticatedSubject.next(true);
+    } else {
+      this.isAuthenticatedSubject.next(false);
     }
   }
 }

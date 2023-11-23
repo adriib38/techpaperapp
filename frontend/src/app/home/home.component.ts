@@ -7,7 +7,7 @@ import { PostService } from '../services/post.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
   isLoggedIn: boolean | undefined;
@@ -17,31 +17,39 @@ export class HomeComponent {
   constructor(
     private authService: AuthService,
     private postService: PostService,
-    private router: Router,
-
+    private router: Router
   ) {
-
     // Subscribe to the authentication state
-    this.authSubscription = authService.isAuthenticated$.subscribe((authenticated) => {
-      this.isLoggedIn = authenticated;
-    });
-    
+    this.authSubscription = authService.isAuthenticated$.subscribe(
+      (authenticated) => {
+        this.isLoggedIn = authenticated;
+      }
+    );
   }
 
   ngOnInit() {
-    // Get the auth token
-    this.authToken = this.authService.getAuthToken() ?? '';
-    console.log("Authenticated: " + this.isLoggedIn);
+    
+    console.log('Logged?: ' + this.isLoggedIn);
 
-    this.postService.getAllPosts(this.authToken).subscribe((data) => {
-      console.log(data);
-      document.getElementById("posts")!.innerHTML = JSON.stringify(data);
-    });
+    this.handleAuthenticationLogic();
+   
+  }
+
+  private handleAuthenticationLogic(): void {
+    if (this.isLoggedIn) {
+      // Get the auth token
+      this.authToken = this.authService.getAuthToken() ?? '';
+      console.log('Authenticated: ' + this.isLoggedIn);
+
+      this.postService.getAllPosts(this.authToken).subscribe((data) => {
+        console.log(data);
+        document.getElementById('posts')!.innerHTML = JSON.stringify(data);
+      });
+    } else {
+    }
   }
 
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
   }
-  
-  
 }

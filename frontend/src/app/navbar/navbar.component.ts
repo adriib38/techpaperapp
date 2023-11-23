@@ -21,21 +21,35 @@ export class NavbarComponent {
   ) {}
 
   ngOnInit(): void {
-    // Get the auth token
-    this.authToken = this.authService.getAuthToken() ?? '';
-    // Subscribe to the authentication state
     this.authSubscription = this.authService.isAuthenticated$.subscribe(
       (authenticated) => {
         this.isLoggedIn = authenticated;
+        console.log('Logged?: ' + this.isLoggedIn);
+        this.handleAuthenticationLogic();
       }
     );
+  }
 
-    this.profileService.getProfileByToken(this.authToken).subscribe((data) => {
-      this.profileUsername = data.profile.username;
-    });
+  private handleAuthenticationLogic(): void {
+    this.authToken = this.authService.getAuthToken() ?? '';
+
+    if (this.isLoggedIn) {
+      this.profileService
+        .getProfileByToken(this.authToken)
+        .subscribe((data) => {
+          this.profileUsername = data.profile.username;
+        });
+    } else {
+    }
   }
 
   logout(): void {
     this.authService.logout();
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 }

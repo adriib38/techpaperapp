@@ -20,4 +20,10 @@ export class PostService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(url, { headers });
   }
+
+  getPostsByUsername(username: string, token: string): Observable<any> {
+    const url = `${this.apiUrl}/user/${username}`;
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(url, { headers });
+  }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { PostService } from '../services/post.service';
 
 @Component({
   selector: 'app-home',
@@ -10,10 +11,12 @@ import { Subscription } from 'rxjs';
 })
 export class HomeComponent {
   isLoggedIn: boolean | undefined;
+  authToken: string | undefined;
   private authSubscription: Subscription | undefined;
 
   constructor(
     private authService: AuthService,
+    private postService: PostService,
     private router: Router,
 
   ) {
@@ -25,11 +28,20 @@ export class HomeComponent {
     
   }
 
+  ngOnInit() {
+    // Get the auth token
+    this.authToken = this.authService.getAuthToken() ?? '';
+    console.log("Authenticated: " + this.isLoggedIn);
+
+    this.postService.getAllPosts(this.authToken).subscribe((data) => {
+      console.log(data);
+      document.getElementById("posts")!.innerHTML = JSON.stringify(data);
+    });
+  }
+
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
   }
   
-  ngOnInit() {
-    console.log("Authenticated: " + this.isLoggedIn);
-  }
+  
 }

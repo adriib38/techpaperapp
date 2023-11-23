@@ -21,7 +21,6 @@ export class ProfileService {
     //Bearer in the header is the type of authentication
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(url, { headers });
-
   }
 
   // Return Observable with user data OR error

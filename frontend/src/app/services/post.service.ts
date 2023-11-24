@@ -26,4 +26,16 @@ export class PostService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(url, { headers });
   }
+
+  getWallByToken(token: string): Observable<any> {
+    const url = `${this.apiUrl}/wall`;
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(url, { headers });
+  }
+
+  getPostById(id: string, token: string): Observable<any> {
+    const url = `${this.apiUrl}/posts/${id}`;
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(url, { headers });
+  }
 }

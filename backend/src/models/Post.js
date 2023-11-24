@@ -14,7 +14,7 @@ class Post {
   static getAllPosts(callback) {
     db.query(
       `
-      SELECT p.title, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid GROUP BY p.id ORDER BY p.created_at DESC
+      SELECT p.title, p.id, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid GROUP BY p.id ORDER BY p.created_at DESC
     `,
       (err, results) => {
         callback(err, results);

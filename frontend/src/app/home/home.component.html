@@ -9,7 +9,10 @@
             <span>{{post.time_ago}}</span>
             <h2>{{post.title}}</h2>        
             <p>{{post.content}}</p>
-            <span>{{post.created_at}}</span>
+            <p>
+                @{{post.username}} |
+                {{post.created_at}}
+            </p>
         </article>
     </section>
 </div>

@@ -12,37 +12,39 @@ class Post {
   }
 
   static getAllPosts(callback) {
-    db.query(`
-      SELECT p.title, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes'
-      FROM post p
-      LEFT JOIN likepost lp ON p.id = lp.post_id
-      GROUP BY p.id;`, 
+    db.query(
+      `
+      SELECT p.title, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid WHERE US.username LIKE ? GROUP BY p.id ORDER BY p.created_at DESC; 
+    `,
       (err, results) => {
-      callback(err, results);
-    });
+        callback(err, results);
+      }
+    );
   }
 
   static getWallPosts(user_uuid, callback) {
     db.query(
-    `
+      `
     SELECT DISTINCT
-    p.*, COUNT(lp.id) AS likes
+    p.*, COUNT(lp.id) AS likes, us.username, pr.verified
     FROM post p
     LEFT JOIN FOLLOWS ON p.author_id = FOLLOWS.followed_uuid
     LEFT JOIN likepost lp ON p.id = lp.post_id
+    LEFT JOIN user us on p.author_id = us.uuid
+    LEFT JOIN profile pr on us.uuid = pr.user_uuid
     WHERE follows.follower_uuid = ? OR p.author_id = ?
     GROUP BY p.id
     ORDER BY p.created_at ASC;
     `,
       [user_uuid, user_uuid],
       (err, results) => {
-
         if (err) {
           return callback(err, null); // Handle the database query error
         } else {
           return callback(null, results);
         }
-    });
+      }
+    );
   }
 
   static getPostById(id, callback) {
@@ -53,17 +55,23 @@ class Post {
       return callback(error, null);
     }
 
-    db.query("SELECT * FROM post WHERE id = ?", [id], (err, results) => {
-      if (err) {
-        return callback(err, null); // Handle the database query error
-      }
+    db.query(
+      `
+      SELECT p.title, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid WHERE p.id = ? GROUP BY p.id; 
+    `,
+      [id],
+      (err, results) => {
+        if (err) {
+          return callback(err, null); // Handle the database query error
+        }
 
-      if (results && results.length > 0) {
-        return callback(null, results[0]); // Return the first result if available
-      } else {
-        return callback(null, null); // Handle the case when no post is found
+        if (results && results.length > 0) {
+          return callback(null, results[0]); // Return the first result if available
+        } else {
+          return callback(null, null); // Handle the case when no post is found
+        }
       }
-    });
+    );
   }
 
   static createPost(post, callback) {
@@ -157,9 +165,9 @@ class Post {
       const error = new Error("Missing required fields");
       return callback(error, null);
     }
-  
+
     search = "%" + search + "%";
-  
+
     db.query(
       `
       SELECT post.id, post.title, post.content, post.created_at, profile.name, user.username, COUNT(likepost.id) AS likes
@@ -175,12 +183,11 @@ class Post {
           console.error("Error getting post:", err);
           return callback(err, null);
         }
-  
+
         callback(null, results);
       }
     );
   }
-  
 }
 
 module.exports = Post;

@@ -1,28 +1,29 @@
 <div *ngIf="isLoggedIn; else notLoggedInContent">
+  Authenticated
 
-    Authenticated
-
-<div id="new-posts">
+  <div id="new-posts">
     <h2>New Post for you</h2>
     <section id="posts">
-        <article *ngFor="let post of postsList" class="post">
-            <span>{{post.time_ago}}</span>
-            <h2>{{post.title}}</h2>        
-            <p>{{post.content}}</p>
-            <p>
-                @{{post.username}} |
-                {{post.created_at}}
-            </p>
-        </article>
-    </section>
-</div>
-    
+      <article *ngFor="let post of postsList" class="post">
+        <header>
+            <span>{{ post.time_ago }}</span>
+            <h2>{{ post.title }}</h2>
+        </header>
+        <p>{{ post.content }}</p>
 
+        <footer>
+          <a href="/profile/{{ post.username }}" class="username">
+            @{{ post.username }}
+          </a>
+          |
+          <span>{{ post.created_at }}</span>
+        </footer>
+      </article>
+    </section>
+  </div>
 </div>
 
 <ng-template #notLoggedInContent>
-    
-    <h1>Welcome to TechPaper</h1>
-    <p>Sign up or login to view posts</p>
-
+  <h1>Welcome to TechPaper</h1>
+  <p>Sign up or login to view posts</p>
 </ng-template>

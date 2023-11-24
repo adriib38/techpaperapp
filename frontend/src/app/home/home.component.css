@@ -24,3 +24,19 @@
     scale: 1.01;
     cursor: pointer;
 }
+
+.post .username {
+    text-decoration: none;
+    color: #000;
+}
+
+.post footer {
+    margin-top: auto;
+}
+
+
+.post {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}

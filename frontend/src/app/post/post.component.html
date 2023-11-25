@@ -1,0 +1,16 @@
+
+<div id="post-container">
+    <h1 id="post-title">{{ post.title }}</h1>
+
+    <p id="date">{{ post.created_at | date:'medium' }}</p>
+
+    <p class="username-container">
+        <a href="/profile/{{ post.username }}" class="username">@{{ post.username }}</a>
+        <span *ngIf="post.verified" class="verified" title="verified">
+            <img src="assets/svg/verified.svg" alt="verified" class="verified-icon">
+        </span>
+    </p>
+
+
+    <div [innerHTML]="post.content" id="post-content"></div>
+</div>

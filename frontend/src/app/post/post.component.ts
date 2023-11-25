@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router' 
 import { PostService } from '../services/post.service';
 import { AuthService } from '../services/auth.service';
+import { Post } from '../Interfaces/Post';
 
 @Component({
   selector: 'app-post',
@@ -11,7 +12,15 @@ import { AuthService } from '../services/auth.service';
 export class PostComponent implements OnInit {
   authToken = '';
   postId = '';
-
+  post: Post = {
+    title: '',
+    content: '',
+    categories: '',
+    created_at: '',
+    username: '',
+    verified: false,
+    likes: 0
+  };
 
   constructor(
     private authService: AuthService,
@@ -28,7 +37,9 @@ export class PostComponent implements OnInit {
     this.postService.getPostById(this.postId, this.authToken).subscribe(
       (data) => {
         console.log('Post exitoso:', data);
-        document.body.innerHTML += JSON.stringify(data);
+        this.post = data.post;
+        console.log('Post:', this.post);
+        
       },
       (error) => {
         console.error('Error obteniendo el post:', error);

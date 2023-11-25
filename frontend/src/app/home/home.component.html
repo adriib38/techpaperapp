@@ -7,9 +7,9 @@
       <article *ngFor="let post of postsList" class="post">
         <header>
             <span>{{ post.time_ago }}</span>
-            <h2><a href="/post/{{ post.id }}">{{ post.title }}</a></h2>
+            <h2 class="post-title"><a href="/post/{{ post.id }}">{{ post.title }}</a></h2>
         </header>
-        <p>{{ post.content }}</p>
+        <p>{{ post.content | slice:0:150 }}...</p>
 
         <footer>
           <a href="/profile/{{ post.username }}" class="username">

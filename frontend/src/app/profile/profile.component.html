@@ -1,10 +1,10 @@
 <div id="profile">
     <section id="profile-info">
         <h1>{{ profile.name }}</h1>
-        <p>
+        <p class="username-container">
             @{{ profile.username }}
             <span *ngIf="profile.verified" class="verified">
-                <img src="assets/svg/verified.svg" alt="verified">
+                <img src="assets/svg/verified.svg" alt="verified" class="verified-icon">
             </span>
         </p>
         <p>{{ profile.bio }}</p>

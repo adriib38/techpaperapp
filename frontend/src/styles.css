@@ -4,6 +4,35 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: arial;
+}
 
-  font-family: 'Roboto', sans-serif;
+.username {
+  text-decoration: none;
+  color: #000;
+}
+
+.username-container {
+  display: flex;
+  align-items: center;
+}
+
+.verified-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+  
+/* Posts */
+
+#post-title, 
+.post-title{ 
+  font-size: 2em;
+  font-family: Unna;
+}
+
+#post-title a,
+.post-title a {
+  text-decoration: none;
+  color: #000;
 }

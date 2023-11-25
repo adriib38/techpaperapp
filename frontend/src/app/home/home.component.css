@@ -19,6 +19,11 @@
     transition: .2s;
 }
 
+.post-title{ 
+  font-size: 2em;
+  font-family: Unna;
+}
+
 .post:hover {
     box-shadow: 0 0 5px #ccc;
     scale: 1.01;
@@ -32,11 +37,4 @@
 
 .post footer {
     margin-top: auto;
-}
-
-
-.post {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
 }

@@ -5,19 +5,21 @@
     <h2>New Post for you</h2>
     <section id="posts">
       <article *ngFor="let post of postsList" class="post">
-        <header>
+        <a href="/post/{{ post.id }}" class="post-link">
+          <header>
             <span>{{ post.time_ago }}</span>
-            <h2 class="post-title"><a href="/post/{{ post.id }}">{{ post.title }}</a></h2>
-        </header>
-        <p>{{ post.content | slice:0:150 }}...</p>
-
-        <footer>
-          <a href="/profile/{{ post.username }}" class="username">
-            @{{ post.username }}
-          </a>
-          |
-          <span>{{ post.created_at }}</span>
-        </footer>
+            <h2 class="post-title">{{ post.title }}</h2>
+          </header>
+          <p>{{ post.content | slice : 0 : 170 }}...</p>
+        </a>
+          <footer>
+            <a href="/profile/{{ post.username }}" class="username">
+              @{{ post.username }}
+            </a>
+            |
+            <span>{{ post.created_at }}</span>
+          </footer>
+   
       </article>
     </section>
   </div>

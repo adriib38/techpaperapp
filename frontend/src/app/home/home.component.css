@@ -11,30 +11,33 @@
 }
 
 .post {
+    display: flex;
+    flex-direction: column;
     flex: 1 1 300px;
     margin: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: .2s;
+    height: 300px;
 }
-
-.post-title{ 
-  font-size: 2em;
-  font-family: Unna;
-}
-
 .post:hover {
     box-shadow: 0 0 5px #ccc;
     scale: 1.01;
     cursor: pointer;
 }
 
-.post .username {
-    text-decoration: none;
-    color: #000;
+.post-title{ 
+  font-size: 1.7em;
+  font-family: Unna;
+  margin: 10px 0 20px 0;
 }
 
 .post footer {
     margin-top: auto;
+}
+
+.post-link {
+    text-decoration: none;
+    color: #000;
 }

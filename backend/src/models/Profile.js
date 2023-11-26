@@ -85,7 +85,6 @@ class Profile {
       `,
       [username],
       (err, results) => {
-        console.log("results", results);
         if (err) {
           return callback(err, null);
         } else {

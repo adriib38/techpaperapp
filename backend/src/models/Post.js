@@ -14,7 +14,7 @@ class Post {
   static getAllPosts(callback) {
     db.query(
       `
-      SELECT p.title, p.id, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid GROUP BY p.id ORDER BY p.created_at DESC
+      SELECT p.title, p.id, p.content, p.created_at, p.categories, p.author_id, left (content, 290) as 'summary', COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid GROUP BY p.id ORDER BY p.created_at DESC
     `,
       (err, results) => {
         callback(err, results);
@@ -26,7 +26,7 @@ class Post {
     db.query(
       `
     SELECT DISTINCT
-    p.*, COUNT(lp.id) AS likes, us.username, pr.verified
+    p.*, COUNT(lp.id) AS likes, us.username, left (content, 290) as 'summary', pr.verified
     FROM post p
     LEFT JOIN FOLLOWS ON p.author_id = FOLLOWS.followed_uuid
     LEFT JOIN likepost lp ON p.id = lp.post_id
@@ -57,7 +57,7 @@ class Post {
 
     db.query(
       `
-      SELECT p.title, p.content, p.created_at, p.categories, p.author_id, COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid WHERE p.id = ? GROUP BY p.id; 
+      SELECT p.title, p.content, p.created_at, p.categories, p.author_id, left (content, 290) as 'summary', COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid WHERE p.id = ? GROUP BY p.id; 
     `,
       [id],
       (err, results) => {
@@ -107,7 +107,7 @@ class Post {
 
     db.query(
       `
-      SELECT PO.id, username, title, content, categories, COUNT(lp.id) AS 'likes', PO.created_at FROM post PO JOIN user US ON PO.author_id = US.uuid LEFT JOIN likepost lp ON po.id = lp.post_id WHERE US.username LIKE ? GROUP BY PO.id ORDER BY PO.created_at DESC;
+      SELECT PO.id, username, title, content, categories, left (content, 290) as 'summary', COUNT(lp.id) AS 'likes', PO.created_at FROM post PO JOIN user US ON PO.author_id = US.uuid LEFT JOIN likepost lp ON po.id = lp.post_id WHERE US.username LIKE ? GROUP BY PO.id ORDER BY PO.created_at DESC;
       `,
       [username],
       (err, results) => {

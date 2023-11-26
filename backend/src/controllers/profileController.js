@@ -21,10 +21,8 @@ const me = async (req, res, next) => {
 // Return the user data from the token
 const getProfileByUsername = async (req, res, next) => {
   let { username } = req.params;
-  console.log("username", username);
 
   Profile.getProfileByUsername(username, (err, results) => {
-    console.log("results", res.length);
     if (err) {
       // Send the error if there was one
       return res

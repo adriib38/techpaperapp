@@ -15,7 +15,7 @@ export class PostComponent implements OnInit {
   post: Post = {
     title: '',
     content: '',
-    categories: '',
+    categories: [],
     created_at: '',
     username: '',
     verified: false,
@@ -38,7 +38,10 @@ export class PostComponent implements OnInit {
       (data) => {
         console.log('Post exitoso:', data);
         this.post = data.post;
-        console.log('Post:', this.post);
+        if (data.post.categories) {
+          this.post.categories = data.post.categories.split(',');
+        }
+
         
       },
       (error) => {

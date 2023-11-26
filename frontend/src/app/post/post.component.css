@@ -10,6 +10,26 @@
     font-family: Unna;
 }
 
+#post-categories {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#post-categories li {
+    list-style-type: none;
+    display: inline;
+    background: rgb(43, 43, 43);
+    font-size: 0.8em;
+    border-radius: 14px;
+    color: aliceblue;
+    padding: 6px 10px;
+    margin-right: 0px;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 2px solid rgb(173, 54, 127);
+    padding-bottom: 4px;
+}
+
 #date {
     margin-bottom: 30px;
 }

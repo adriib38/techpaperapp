@@ -42,13 +42,13 @@ export class HomeComponent {
       this.authToken = this.authService.getAuthToken() ?? '';
       console.log('Authenticated: ' + this.isLoggedIn);
 
-      this.postService.getAllPosts(this.authToken).subscribe((data) => {
-        console.log(data);
-        data.forEach((element: any) => {
+      this.postService.getWallByToken(this.authToken).subscribe((data) => {
+        this.postsList = data.posts;
+        this.postsList.forEach((element: any) => {
           element.time_ago = moment(element.created_at, "YYYYMMDD").fromNow(); // 12 years ago
           element.created_at = moment(element.created_at, "YYYYMMDD").format("MMM Do YY"); // 12 years ago
         });
-        this.postsList = data;
+       
       });
     } else {
     }

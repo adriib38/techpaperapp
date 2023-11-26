@@ -1,8 +1,15 @@
-#new-posts > h2 {
+#posts-container > h2 {
     text-align: center;
     font-family: Helvetica;
     font-size: 3rem;
     margin-bottom: 20px;
+}
+
+#posts-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1300px;
+    padding: 40px;
 }
 
 #posts {
@@ -14,17 +21,19 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 300px;
+    height: 300px;
     margin: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: .2s;
-    height: 300px;
+    background: rgb(218,218,218);
+    background: linear-gradient(0deg, rgba(249, 247, 255, 0.719), rgba(255,255,255,1) 100%);
+    cursor: pointer;
 }
 .post:hover {
-    box-shadow: 0 0 5px #ccc;
-    scale: 1.01;
-    cursor: pointer;
+    scale: .97;
+    box-shadow: .4em .4em rgb(80, 80, 80)
 }
 
 .post-title{ 
@@ -33,8 +42,30 @@
   margin: 10px 0 20px 0;
 }
 
+.post .username {
+    display: flex;
+    align-items: center;
+}
+
+.post-actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post .likes {
+    display: inline-flex;
+}
+
 .post footer {
     margin-top: auto;
+}
+
+.post footer > p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .post-link {

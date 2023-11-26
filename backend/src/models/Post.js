@@ -106,7 +106,9 @@ class Post {
     }
 
     db.query(
-      "SELECT username, title, content, categories, PO.created_at FROM `post` PO JOIN `user` US ON PO.author_id = US.uuid WHERE US.username LIKE ? ORDER BY PO.created_at DESC",
+      `
+      SELECT PO.id, username, title, content, categories, COUNT(lp.id) AS 'likes', PO.created_at FROM post PO JOIN user US ON PO.author_id = US.uuid LEFT JOIN likepost lp ON po.id = lp.post_id WHERE US.username LIKE ? GROUP BY PO.id ORDER BY PO.created_at DESC;
+      `,
       [username],
       (err, results) => {
         if (err) {

@@ -1,23 +1,51 @@
 <div id="profile">
-    <section id="profile-info">
-        <h1>{{ profile.name }}</h1>
-        <p class="username-container">
-            @{{ profile.username }}
-            <span *ngIf="profile.verified" class="verified">
-                <img src="assets/svg/verified.svg" alt="verified" class="verified-icon">
-            </span>
-        </p>
-        <p>{{ profile.bio }}</p>
-        <p><i>{{ profile.n_posts }} posts</i></p>
-        <span><i>Since {{ profile.created_at }}</i></span>
-    </section>
+  <section id="profile-info">
+    <div>
+      <h1>{{ profile.name }}</h1>
+      <p class="username-container">
+        @{{ profile.username }}
+        <span *ngIf="profile.verified" class="verified">
+          <img
+            src="assets/svg/verified.svg"
+            alt="verified"
+            class="verified-icon"
+          />
+        </span>
+      </p>
+      <p>{{ profile.bio }}</p>
+      <p>
+        <i>{{ profile.n_posts }} posts</i>
+      </p>
+      <span
+        ><i>Since {{ profile.created_at }}</i></span
+      >
+    </div>
+  </section>
 
-    <section id="posts">
-        <article *ngFor="let post of postsList" class="post">
-            <span>{{post.time_ago}}</span>
-            <h2>{{post.title}}</h2>        
-            <p>{{post.content}}</p>
-            <span>{{post.created_at}}</span>
-        </article>
-    </section>
+  <section id="posts">
+    <article *ngFor="let post of postsList" class="post">
+      <a href="/post/{{ post.id }}" class="post-link">
+        <header>
+          <span>{{ post.time_ago }}</span>
+          <h2 class="post-title">{{ post.title }}</h2>
+        </header>
+        <p>{{ post.content | slice : 0 : 170 }}...</p>
+      </a>
+
+      <div class="post-actions">
+        <span class="likes">
+          <img src="/assets/svg/heart.svg" alt="heart icon" width="20" />
+          {{ post.likes }}
+        </span>
+      </div>
+
+      <footer>
+        <a href="/profile/{{ post.username }}" class="username">
+          @{{ post.username }}
+        </a>
+        |
+        <span>{{ post.created_at }}</span>
+      </footer>
+    </article>
+  </section>
 </div>

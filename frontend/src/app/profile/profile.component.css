@@ -3,31 +3,64 @@
 }
 
 #profile-info {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
     margin: 10px;
     padding: 10px;
 }
 
+#profile-info > div {
+    position: fixed;
+}
+
+/* Section posts */
 #posts {
-    flex: 2;
-    margin-bottom: 10px;
-    padding: 10px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    width: 630px;
 }
 
 .post {
-    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 300px;
+    margin: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 600px;
-    height: 200px;
     transition: .2s;
+    height: 100px;
+    width: 100%;
 }
-
 .post:hover {
     box-shadow: 0 0 5px #ccc;
     scale: 1.01;
     cursor: pointer;
+}
+
+.post-title{ 
+  font-size: 1.7em;
+  font-family: Unna;
+  margin: 10px 0 20px 0;
+}
+
+.post-actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post .likes {
+    display: inline-flex;
+}
+
+.post footer {
+    margin-top: auto;
+}
+
+.post-link {
+    text-decoration: none;
+    color: #000;
 }

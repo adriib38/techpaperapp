@@ -1,3 +1,4 @@
+
 nav {
     background-color: #333;
     color: #fff;
@@ -9,21 +10,30 @@ nav .logo {
     font-size: 1.5rem;
 }
 
-nav > ul {
+ul {
     display: flex;
     list-style: none;
     gap: 50px;
     align-items: center;
 }
 
-nav a {
+li a {
     color: #fff;
     text-decoration: none;
-    padding: 8px;
+    padding: 12px;
 }
-
-nav a:hover {
+li:not(.logo):hover {
     color: #ccc;
     background: #cccccc31;
     border-radius: 4px;
+}
+
+
+div.right {
+    margin-left: auto;
+    display: flex;
+}
+
+li a.logout {
+    color: #FF4472;
 }

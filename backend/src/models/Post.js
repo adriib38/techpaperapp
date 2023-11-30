@@ -8,6 +8,7 @@ class Post {
     this.title = post.title;
     this.content = post.content;
     this.categories = post.categories;
+    this.created_at = post.created_at;
     this.author = post.author;
   }
 
@@ -75,17 +76,18 @@ class Post {
   }
 
   static createPost(post, callback) {
-    const { id, title, content, categories, author } = post;
+    const { id, title, content, categories, author, created_at } = post;
 
-    if (!id || !title || !content || !author || !categories) {
+
+    if (!id || !title || !content || !author || !categories || !created_at) {
       const error = new Error("Missing required fields");
       console.error("Error creating post:", error);
       return callback(error, null);
     }
 
     db.query(
-      "INSERT INTO post (id, title, content, categories, author_id) VALUES (?, ?, ?, ?, ?)",
-      [id, title, content, categories, author],
+      "INSERT INTO post (id, title, content, categories, author_id, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+      [id, title, content, categories, author, created_at],
       (err, results) => {
         if (err) {
           console.error("Error creating user:", err);

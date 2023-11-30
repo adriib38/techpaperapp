@@ -35,7 +35,7 @@ class Post {
     LEFT JOIN profile pr on us.uuid = pr.user_uuid
     WHERE follows.follower_uuid = ? OR p.author_id = ?
     GROUP BY p.id
-    ORDER BY p.created_at ASC;
+    ORDER BY p.created_at DESC;
     `,
       [user_uuid, user_uuid],
       (err, results) => {

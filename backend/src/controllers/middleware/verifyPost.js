@@ -1,6 +1,10 @@
 function verifyPost(post) {
     let { title, content, categories } = post;
 
+    title = title.trim();
+    content = content.trim();
+    
+
     let result = { error: false, message: "" };
   
     if (!title || !content) {

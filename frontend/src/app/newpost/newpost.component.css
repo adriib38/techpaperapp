@@ -37,10 +37,36 @@
     resize: vertical;
 }
 
-.form-group .alert {
+.form-group .error-msg {
     color: red;
     font-size: 0.8em;
     margin-top: 10px;
     font-weight: bold;
     text-align: left;
+}
+
+.error-div {
+    text-align: left;
+}
+
+#create-btn {
+    display: flex;
+    gap: 7px;
+    background: #3390EC;
+    border: none;
+    color: white;
+    padding: 15px 35px;
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: left;
+    transition: .1s;
+}
+#create-btn:disabled {
+    background: rgba(128, 128, 128, 0.555);
+    cursor: default;
+}
+#create-btn:enabled:hover {
+    scale: .95;
 }

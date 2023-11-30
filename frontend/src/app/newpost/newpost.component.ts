@@ -47,6 +47,8 @@ export class NewpostComponent implements OnInit {
       likes: 0
     }
 
+    //
+
     console.log(post);
 
     this.postService.createPost(post, this.authToken).subscribe(

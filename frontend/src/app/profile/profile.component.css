@@ -10,15 +10,22 @@
     padding: 10px;
 }
 
-#profile-info > div {
-    position: fixed;
+@media only screen and (max-width: 727px) {
+    #profile  {
+        flex-direction: column;
+    }
+
+    #profile-info {
+        width: 100%;
+    }
+
 }
 
 /* Section posts */
 #posts {
     display: flex;
     flex-direction: column;
-    width: 630px;
+    max-width: 600px
 }
 
 .post {
@@ -31,7 +38,6 @@
     border-radius: 5px;
     transition: .2s;
     height: 100px;
-    width: 100%;
 }
 .post:hover {
     box-shadow: 0 0 5px #ccc;

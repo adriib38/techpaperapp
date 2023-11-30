@@ -45,12 +45,12 @@ const createPost = async (req, res, next) => {
     return res.status(400).json({ "created": false, "message": verificationResult.message });
   }
 
-  Post.createPost(post, (err, results) => {
+  Post.createPost(post, (err, results, postId) => {
     if (err) {
       console.error(err);
       res.status(500).send("Error creating post");
     } else {
-      res.status(200).json({ message: "Post created" });
+      res.status(200).json({ message: "Post created",  post_id: postId });
     }
   });
 };

@@ -91,7 +91,7 @@ class Post {
           console.error("Error creating user:", err);
           callback(err, null);
         } else {
-          callback(null, results);
+          callback(null, results, id);
         }
       }
     );

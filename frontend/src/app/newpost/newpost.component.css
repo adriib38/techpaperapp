@@ -1,0 +1,46 @@
+#form-newpost{
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1000px;
+    padding: 40px;
+    text-align: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    text-align: left;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.form-group #title {
+    height: 40px;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.form-group #content {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    height: 200px;
+    resize: vertical;
+}
+
+.form-group .alert {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: left;
+}

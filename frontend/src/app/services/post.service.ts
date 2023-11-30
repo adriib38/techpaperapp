@@ -16,7 +16,6 @@ export class PostService {
 
   getAllPosts(token: string): Observable<any> {
     const url = `${this.apiUrl}/`;
-    //Bearer in the header is the type of authentication
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(url, { headers });
   }
@@ -37,5 +36,17 @@ export class PostService {
     const url = `${this.apiUrl}/posts/${id}`;
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(url, { headers });
+  }
+
+  createPost(post: any, token: string): Observable<any> {
+    let body = {
+      title: post.title,
+      content: post.content,
+      categories: 'AA'
+    };
+
+    const url = `${this.apiUrl}/`;
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(url, body, { headers });
   }
 }

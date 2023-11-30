@@ -7,6 +7,7 @@ import { LogoutComponent } from './auth-module/logout/logout.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './middlewares/auth-guard.component';
 import { PostComponent } from './post/post.component';
+import { NewpostComponent } from './newpost/newpost.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile/:username', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
+  { path: 'new', component: NewpostComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 
 ];

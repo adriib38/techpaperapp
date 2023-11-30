@@ -3,6 +3,8 @@
         <li class="logo"><a routerLink="/">TechPaper</a></li>
         <li *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
         <li *ngIf="!isLoggedIn"><a routerLink="/register">Registro</a></li>
+        
+        <li *ngIf="isLoggedIn"><a routerLink="/new">New</a></li>
 
         <div class="right">
             <li *ngIf="isLoggedIn"><a routerLink="/profile/{{ profileUsername }}">Perfil</a></li>

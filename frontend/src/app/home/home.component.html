@@ -15,9 +15,20 @@
 
         <div class="post-actions">
           <span class="likes">
-            <img src="/assets/svg/heart.svg" alt="heart icon" width="20" />
+            <img src="/assets/svg/heart.svg" 
+            title="Like"
+            alt="heart icon" 
+            width="20" 
+            />
             {{ post.likes }}
           </span>
+
+          <img *ngIf=post.is_author 
+            src="/assets/svg/trash.svg" 
+            title="Delete"
+            alt="delete icon"
+            width="20"
+            />
        </div>
         
         <footer>

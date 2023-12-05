@@ -34,17 +34,28 @@
 
       <div class="post-actions">
         <span class="likes">
-          <img src="/assets/svg/heart.svg" alt="heart icon" width="20" />
+          <img src="/assets/svg/heart.svg" 
+          title="Like"
+          alt="heart icon" 
+          width="20" 
+          />
           {{ post.likes }}
         </span>
-      </div>
+
+        <img *ngIf=post.is_author 
+          src="/assets/svg/trash.svg" 
+          title="Delete"
+          alt="delete icon"
+          width="22"
+          />
+     </div>
 
       <footer>
         <a href="/profile/{{ post.username }}" class="username">
           @{{ post.username }}
         </a>
         |
-        <span>{{ post.created_at }}</span>
+        <span>{{ post.created_at | date:'short' }}</span>
       </footer>
     </article>
   </section>

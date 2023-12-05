@@ -6,7 +6,7 @@ const verifyPost = require("./middleware/verifyPost");
 
 // Get all posts
 const getAllPosts = async (req, res, next) => {
-  Post.getAllPosts((err, results) => {
+  Post.getAllPosts(req.uuid, (err, results) => {
     if (err) {
       res.status(500).json({ message: "Error getting posts", error: err });
     } else {
@@ -16,7 +16,7 @@ const getAllPosts = async (req, res, next) => {
 };
 
 const getPostById = async (req, res, next) => {
-  Post.getPostById(req.params.id, (err, results) => {
+  Post.getPostById(req.params.id, req.uuid, (err, results) => {
     if (err) {
       // Send the error if there was one
       return res
@@ -57,7 +57,7 @@ const createPost = async (req, res, next) => {
 };
 
 const getPostsByUsername = async (req, res, next) => {
-  Post.getPostsByUsername(req.params.username, (err, results) => {
+  Post.getPostsByUsername(req.params.username, req.uuid, (err, results) => {
     if (err) {
       // Send the error if there was one
       return res
@@ -77,7 +77,7 @@ const getPostsByUsername = async (req, res, next) => {
 
 const getPostsByCategory = async (req, res, next) => {
   req.params.category = req.params.category.split(" ")[0];
-  Post.getPostsByCategory(req.params.category, (err, results) => {
+  Post.getPostsByCategory(req.params.category, req.uuid, (err, results) => {
     if (err) {
       // Send the error if there was one
       return res
@@ -160,7 +160,7 @@ const getWallPosts = async (req, res, next) => {
 
 const searchPosts = async (req, res, next) => {
  
-  Post.getSearchPost(req.params.search, (err, results) => {
+  Post.getSearchPost(req.params.search, req.uuid, (err, results) => {
     if (err) {
       // Send the error if there was one
       return res

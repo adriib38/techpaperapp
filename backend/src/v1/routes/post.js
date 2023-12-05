@@ -6,7 +6,7 @@ const verifyToken = require("../../controllers/middleware/verifyToken");
 const router = express.Router();
 
 router
-    .get("/", postController.getAllPosts)
+    .get("/", verifyToken, postController.getAllPosts)
     .get("/user/:username", verifyToken, postController.getPostsByUsername)
     .get("/posts/:id", verifyToken, postController.getPostById)
     .get("/category/:category", verifyToken, postController.getPostsByCategory)

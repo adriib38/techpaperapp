@@ -12,11 +12,63 @@ class Post {
     this.author = post.author;
   }
 
-  static getAllPosts(callback) {
+  /*
+  SELECT
+    p.title,
+    p.id,
+    p.content,
+    p.created_at,
+    p.categories,
+    p.author_id,
+    LEFT(content, 290) AS 'summary',
+    COUNT(lp.id) AS 'likes',
+    us.username,
+    pr.verified,
+     CASE WHEN p.author_id = ? THEN 1 ELSE 0 END AS is_author
+FROM
+    post p
+LEFT JOIN likepost lp ON
+    p.id = lp.post_id
+LEFT JOIN USER us ON
+    p.author_id = us.uuid
+LEFT JOIN PROFILE pr ON
+    us.uuid = pr.user_uuid
+GROUP BY
+    p.id
+ORDER BY
+    p.created_at
+DESC;
+*/
+  static getAllPosts(user_uuid, callback) {
     db.query(
       `
-      SELECT p.title, p.id, p.content, p.created_at, p.categories, p.author_id, left (content, 290) as 'summary', COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid GROUP BY p.id ORDER BY p.created_at DESC
+      SELECT
+      p.title,
+      p.id,
+      p.content,
+      p.created_at,
+      p.categories,
+      p.author_id,
+      LEFT(content, 290) AS 'summary',
+      COUNT(lp.id) AS 'likes',
+      us.username,
+      pr.verified,
+       CASE WHEN p.author_id = ? THEN 1 ELSE 0 END AS is_author
+  FROM
+      post p
+  LEFT JOIN likepost lp ON
+      p.id = lp.post_id
+  LEFT JOIN USER us ON
+      p.author_id = us.uuid
+  LEFT JOIN PROFILE pr ON
+      us.uuid = pr.user_uuid
+  GROUP BY
+      p.id
+  ORDER BY
+      p.created_at
+  DESC;
     `,
+      [user_uuid],
       (err, results) => {
         callback(err, results);
       }
@@ -26,16 +78,17 @@ class Post {
   static getWallPosts(user_uuid, callback) {
     db.query(
       `
-    SELECT DISTINCT
-    p.*, COUNT(lp.id) AS likes, us.username, left (content, 290) as 'summary', pr.verified
-    FROM post p
-    LEFT JOIN FOLLOWS ON p.author_id = FOLLOWS.followed_uuid
-    LEFT JOIN likepost lp ON p.id = lp.post_id
-    LEFT JOIN user us on p.author_id = us.uuid
-    LEFT JOIN profile pr on us.uuid = pr.user_uuid
-    WHERE follows.follower_uuid = ? OR p.author_id = ?
-    GROUP BY p.id
-    ORDER BY p.created_at DESC;
+      SELECT DISTINCT
+      p.*, COUNT(lp.id) AS likes, us.username, left (content, 290) as 'summary', pr.verified,
+      CASE WHEN p.author_id = ? THEN 1 ELSE 0 END AS is_author
+      FROM post p
+      LEFT JOIN FOLLOWS ON p.author_id = FOLLOWS.followed_uuid
+      LEFT JOIN likepost lp ON p.id = lp.post_id
+      LEFT JOIN user us on p.author_id = us.uuid
+      LEFT JOIN profile pr on us.uuid = pr.user_uuid
+      WHERE follows.follower_uuid = ? OR p.author_id = ?
+      GROUP BY p.id
+      ORDER BY p.created_at DESC;
     `,
       [user_uuid, user_uuid],
       (err, results) => {
@@ -48,7 +101,7 @@ class Post {
     );
   }
 
-  static getPostById(id, callback) {
+  static getPostById(id, user_uuid, callback) {
     // Check if the id is received
     if (!id) {
       const error = new Error("Missing required fields");
@@ -58,9 +111,32 @@ class Post {
 
     db.query(
       `
-      SELECT p.title, p.content, p.created_at, p.categories, p.author_id, left (content, 290) as 'summary', COUNT(lp.id) AS 'likes', us.username, pr.verified FROM post p LEFT JOIN likepost lp ON p.id = lp.post_id LEFT JOIN USER us ON p.author_id = us.uuid LEFT JOIN PROFILE pr ON us.uuid = pr.user_uuid WHERE p.id = ? GROUP BY p.id; 
+      SELECT
+      p.title,
+      p.content,
+      p.created_at,
+      p.categories,
+      p.author_id,
+      LEFT(content, 290) AS 'summary',
+      COUNT(lp.id) AS 'likes',
+      us.username,
+      pr.verified,
+      CASE WHEN p.author_id = ? THEN 1 ELSE 0
+  END AS is_author
+  FROM
+      post p
+  LEFT JOIN likepost lp ON
+      p.id = lp.post_id
+  LEFT JOIN USER us ON
+      p.author_id = us.uuid
+  LEFT JOIN PROFILE pr ON
+      us.uuid = pr.user_uuid
+  WHERE
+      p.id = ?
+  GROUP BY
+      p.id;
     `,
-      [id],
+      [user_uuid, id],
       (err, results) => {
         if (err) {
           return callback(err, null); // Handle the database query error
@@ -77,7 +153,6 @@ class Post {
 
   static createPost(post, callback) {
     const { id, title, content, categories, author, created_at } = post;
-
 
     if (!id || !title || !content || !author || !categories || !created_at) {
       const error = new Error("Missing required fields");
@@ -99,7 +174,7 @@ class Post {
     );
   }
 
-  static getPostsByUsername(username, callback) {
+  static getPostsByUsername(username, user_uuid, callback) {
     // Check if the uuid is received
     if (!username) {
       const error = new Error("Missing required fields");
@@ -108,10 +183,32 @@ class Post {
     }
 
     db.query(
-      `
-      SELECT PO.id, username, title, content, categories, left (content, 290) as 'summary', COUNT(lp.id) AS 'likes', PO.created_at FROM post PO JOIN user US ON PO.author_id = US.uuid LEFT JOIN likepost lp ON po.id = lp.post_id WHERE US.username LIKE ? GROUP BY PO.id ORDER BY PO.created_at DESC;
+      ` 
+      SELECT
+      PO.id,
+      username,
+      title,
+      content,
+      categories,
+      LEFT(content, 290) AS 'summary',
+      COUNT(lp.id) AS 'likes',
+      PO.created_at,
+      CASE WHEN po.author_id = ? THEN 1 ELSE 0 END as is_author
+      FROM
+          post PO
+      JOIN USER US ON
+          PO.author_id = US.uuid
+      LEFT JOIN likepost lp ON
+          po.id = lp.post_id
+      WHERE
+          US.username LIKE ?
+      GROUP BY
+          PO.id
+      ORDER BY
+          PO.created_at
+      DESC;
       `,
-      [username],
+      [user_uuid, username],
       (err, results) => {
         if (err) {
           console.error("Error getting user:", err);
@@ -141,7 +238,7 @@ class Post {
     });
   }
 
-  static getPostsByCategory(category, callback) {
+  static getPostsByCategory(category, user_uuid, callback) {
     if (!category) {
       const error = new Error("Missing required fields");
       console.error("Error getting post:", error);
@@ -151,8 +248,8 @@ class Post {
     category = "%" + category + "%";
 
     db.query(
-      "SELECT * FROM post WHERE categories LIKE ?",
-      [category],
+      "SELECT *, CASE WHEN po.author_id = ? THEN 1 ELSE 0 END as is_author FROM post as po WHERE categories LIKE ?;",
+      [user_uuid, category],
       (err, results) => {
         if (err) {
           console.error("Error getting post:", err);
@@ -164,7 +261,7 @@ class Post {
     );
   }
 
-  static getSearchPost(search, callback) {
+  static getSearchPost(search, user_uuid, callback) {
     if (!search) {
       const error = new Error("Missing required fields");
       return callback(error, null);
@@ -174,14 +271,9 @@ class Post {
 
     db.query(
       `
-      SELECT post.id, post.title, post.content, post.created_at, profile.name, user.username, COUNT(likepost.id) AS likes
-      FROM post 
-      JOIN user ON post.author_id = user.uuid
-      JOIN profile ON user.uuid = profile.user_uuid
-      LEFT JOIN likepost ON post.id = likepost.post_id
-      WHERE post.title LIKE ?
+      SELECT post.id, post.title, post.content, post.created_at, PROFILE.name, USER.username, COUNT(likepost.id) AS likes, CASE WHEN post.author_id = ? THEN 1 ELSE 0 END AS is_author FROM post JOIN USER ON post.author_id = USER.uuid JOIN PROFILE ON USER.uuid = PROFILE.user_uuid LEFT JOIN likepost ON post.id = likepost.post_id WHERE post.title LIKE ? GROUP BY post.id; 
       `,
-      [search],
+      [user_uuid, search],
       (err, results) => {
         if (err) {
           console.error("Error getting post:", err);

@@ -90,7 +90,7 @@ DESC;
       GROUP BY p.id
       ORDER BY p.created_at DESC;
     `,
-      [user_uuid, user_uuid],
+      [user_uuid, user_uuid, user_uuid],
       (err, results) => {
         if (err) {
           return callback(err, null); // Handle the database query error

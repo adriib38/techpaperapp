@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgModule } from "@angular/core";
 import { Router } from '@angular/router';
 import { Post } from '../Interfaces/Post';
-import { PostClass } from '../Interfaces/PostClass';
 import { PostService } from '../services/post.service';
 import { AuthService } from '../services/auth.service';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
@@ -14,7 +13,7 @@ import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 })
 export class NewpostComponent implements OnInit {
   authToken = '';
-  
+  post: Post | undefined;
   title: string = '';
   content: string = '';
   categories:[] = [];
@@ -37,21 +36,11 @@ export class NewpostComponent implements OnInit {
 
 
   onSubmit() {
-    var post: Post = {
-      title: this.title,
-      content: this.content,
-      categories: this.categories ?? [],
-      created_at: '',
-      username: '',
-      verified: false,
-      likes: 0
-    }
 
-    //
 
-    console.log(post);
+    console.log(this.post);
 
-    this.postService.createPost(post, this.authToken).subscribe(
+    this.postService.createPost(this.post, this.authToken).subscribe(
       (data) => {
         console.log('Post creado:', data);
         let postId = data.post_id;

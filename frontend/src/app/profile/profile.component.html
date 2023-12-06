@@ -23,40 +23,6 @@
   </section>
 
   <section id="posts">
-    <article *ngFor="let post of postsList" class="post">
-      <a href="/post/{{ post.id }}" class="post-link">
-        <header>
-          <span>{{ post.time_ago }}</span>
-          <h2 class="post-title">{{ post.title }}</h2>
-        </header>
-        <p>{{ post.content | slice : 0 : 170 }}...</p>
-      </a>
-
-      <div class="post-actions">
-        <span class="likes">
-          <img src="/assets/svg/heart.svg" 
-          title="Like"
-          alt="heart icon" 
-          width="20" 
-          />
-          {{ post.likes }}
-        </span>
-
-        <img *ngIf=post.is_author 
-          src="/assets/svg/trash.svg" 
-          title="Delete"
-          alt="delete icon"
-          width="22"
-          />
-     </div>
-
-      <footer>
-        <a href="/profile/{{ post.username }}" class="username">
-          @{{ post.username }}
-        </a>
-        |
-        <span>{{ post.created_at | date:'short' }}</span>
-      </footer>
-    </article>
+    <app-post-list [posts]="postsList"></app-post-list>
   </section>
 </div>

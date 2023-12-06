@@ -11,8 +11,10 @@ import { LogoutComponent } from './auth-module/logout/logout.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
-import { PostComponent } from './post/post.component';
+import { PagePostComponent } from './pagepost/pagepost.component';
 import { NewpostComponent } from './newpost/newpost.component';
+import { PostComponentComponent } from './post-component/post-component.component';
+import { PostListComponent } from './post-list/post-list.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +25,10 @@ import { NewpostComponent } from './newpost/newpost.component';
     NavbarComponent,
     LoginComponent,
     ProfileComponent,
-    PostComponent,
-    NewpostComponent
+    PagePostComponent,
+    NewpostComponent,
+    PostComponentComponent,
+    PostListComponent
   ],
   imports: [
     BrowserModule,

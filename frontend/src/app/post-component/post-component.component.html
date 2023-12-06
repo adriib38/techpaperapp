@@ -1,0 +1,71 @@
+<div class="post">
+<header>
+  <span>{{ post!.time_ago }}</span>
+  <h2>{{ post!.title }}</h2>
+</header>
+<p>{{ post!.summary }}</p>
+
+<footer>
+  <a
+    *ngIf="post!.username"
+    href="/profile/{{ post!.username }}"
+    class="username"
+  >
+    @{{ post!.username }}
+  </a>
+  <span *ngIf="post!.is_author === 1" class="author-badge">Author</span>
+  <span *ngIf="post!.verified" class="verified">
+    <img src="assets/svg/verified.svg" alt="verified" class="verified-icon" />
+  </span>
+  |
+  <span>{{ post!.created_at }}</span>
+  <span *ngIf="post!.likes" class="like-count">{{ post!.likes }} Likes</span>
+</footer>
+</div>
+<!--
+<article class="post">
+  <a href="/post/{{ post!.id }}" class="post-link">
+    <header>
+      <span>{{ post!.time_ago }}</span>
+      <h2 class="post-title">{{ post!.title }}</h2>
+    </header>
+    <p>{{ post!.summary }}...</p>
+  </a>
+
+  <div class="post-actions">
+    <span class="likes">
+      <img
+        src="/assets/svg/heart.svg"
+        title="Like"
+        alt="heart icon"
+        width="20"
+      />
+      {{ post!.likes }}
+    </span>
+
+    <img
+      *ngIf="post?.is_author"
+      src="/assets/svg/trash.svg"
+      title="Delete"
+      alt="delete icon"
+      width="20"
+    />
+  </div>
+
+  <footer>
+    <p>
+      <a href="/profile/{{ post?.username }}" class="username"
+        >@{{ post?.username }}
+        <img
+          src="assets/svg/verified.svg"
+          alt="verified"
+          class="verified-icon"
+          *ngIf="post?.verified"
+        />
+      </a>
+      |
+      <span>{{ post?.created_at }}</span>
+    </p>
+  </footer>
+</article>
+-->

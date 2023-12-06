@@ -3,49 +3,10 @@
 
   <div id="posts-container">
     <h2>New Post for you</h2>
-    <section id="posts">
-      <article *ngFor="let post of postsList" class="post">
-        <a href="/post/{{ post.id }}" class="post-link">
-          <header>
-            <span>{{ post.time_ago }}</span>
-            <h2 class="post-title">{{ post.title }}</h2>
-          </header>
-          <p>{{ post.summary }}...</p>
-        </a>
 
-        <div class="post-actions">
-          <span class="likes">
-            <img src="/assets/svg/heart.svg" 
-            title="Like"
-            alt="heart icon" 
-            width="20" 
-            />
-            {{ post.likes }}
-          </span>
+    <app-post-list [posts]="postsList"></app-post-list>
 
-          <img *ngIf=post.is_author 
-            src="/assets/svg/trash.svg" 
-            title="Delete"
-            alt="delete icon"
-            width="20"
-            />
-       </div>
-        
-        <footer>
-          <p>
-            <a href="/profile/{{ post.username }}" class="username">@{{ post.username }}
-              <img src="assets/svg/verified.svg" alt="verified" class="verified-icon" *ngIf="post.verified" />
-            
-            </a>
-          |
-          <span>{{ post.created_at }}</span>
-        </p>
-        </footer>
-      </article>
-    </section>
   </div>
-
-  
 </div>
 
 <ng-template #notLoggedInContent>

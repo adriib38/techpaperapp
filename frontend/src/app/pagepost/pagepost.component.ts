@@ -5,11 +5,11 @@ import { AuthService } from '../services/auth.service';
 import { Post } from '../Interfaces/Post';
 
 @Component({
-  selector: 'app-post',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css']
+  selector: 'app-pagepost',
+  templateUrl: './pagepost.component.html',
+  styleUrls: ['./pagepost.component.css']
 })
-export class PostComponent implements OnInit {
+export class PagePostComponent implements OnInit {
   authToken = '';
   postId = '';
   post: Post = {
@@ -19,7 +19,10 @@ export class PostComponent implements OnInit {
     created_at: '',
     username: '',
     verified: false,
-    likes: 0
+    likes: 0,
+    id: '',
+    author_id: '',
+    summary: ''
   };
 
   constructor(

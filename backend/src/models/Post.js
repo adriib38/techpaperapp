@@ -193,6 +193,7 @@ DESC;
       LEFT(content, 290) AS 'summary',
       COUNT(lp.id) AS 'likes',
       PO.created_at,
+      pr.verified,
       CASE WHEN po.author_id = ? THEN 1 ELSE 0 END as is_author
       FROM
           post PO
@@ -200,6 +201,7 @@ DESC;
           PO.author_id = US.uuid
       LEFT JOIN likepost lp ON
           po.id = lp.post_id
+      LEFT JOIN profile pr ON po.author_id = pr.user_uuid
       WHERE
           US.username LIKE ?
       GROUP BY

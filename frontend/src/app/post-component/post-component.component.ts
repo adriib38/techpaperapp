@@ -28,11 +28,9 @@ export class PostComponentComponent implements OnInit {
     console.log('OnDeletePost()')
     this.postService.deletePostById(postId!, this.authToken).subscribe(
       (data) => {
-        console.log('Post deleted:', data);
-
+        alert('Post deleted');
       },
       (error) => {
-        console.error('Error deleting post:', error);
         alert('Error deleting post');
       }
     )

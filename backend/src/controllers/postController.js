@@ -119,7 +119,7 @@ const deletePostById = async (req, res, next) => {
     }
 
     //Verify if post author is the user
-    if(post.author_uuid != authorUuid){
+    if(post.author_id != authorUuid){
       return res.status(401).json({ message: "You are not authorized to delete this post" });
     }
 

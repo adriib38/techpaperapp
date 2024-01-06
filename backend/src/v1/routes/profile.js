@@ -7,6 +7,6 @@ const router = express.Router();
 
 router
     .get("/me", verifyToken, profileController.me)  
-    .get("/u/:username", profileController.getProfileByUsername)
+    .get("/u/:username", verifyToken, profileController.getProfileByUsername)
 
 module.exports = router;

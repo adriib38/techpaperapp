@@ -22,7 +22,7 @@ const me = async (req, res, next) => {
 const getProfileByUsername = async (req, res, next) => {
   let { username } = req.params;
 
-  Profile.getProfileByUsername(username, (err, results) => {
+  Profile.getProfileByUsername(username, req.uuid, (err, results) => {
     if (err) {
       // Send the error if there was one
       return res

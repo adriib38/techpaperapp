@@ -60,7 +60,7 @@ class Profile {
     );
   }
 
-  static getProfileByUsername(username, callback) {
+  static getProfileByUsername(username, user_uuid, callback) {
     if (!username || username === "") {
       const error = new Error("Missing required fields");
       console.error("Error getting profile:", error);
@@ -76,6 +76,7 @@ class Profile {
       PRO.verified,
       PRO.bio,
       USR.created_at,
+      CASE WHEN USR.uuid = ? THEN 1 ELSE 0 END as me,
       COUNT(POS.id) AS 'n_posts'
     FROM user USR
     JOIN profile PRO ON USR.uuid = PRO.user_uuid
@@ -83,7 +84,7 @@ class Profile {
     WHERE USR.username = ?
     GROUP BY USR.username, USR.email, PRO.name, PRO.bio, USR.created_at;
       `,
-      [username],
+      [user_uuid, username],
       (err, results) => {
         if (err) {
           return callback(err, null);

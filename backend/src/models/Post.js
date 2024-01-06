@@ -230,10 +230,12 @@ DESC;
       return callback(error, null);
     }
 
-    db.query("DELETE FROM `post` WHERE id = ?", [id], (err, results) => {
+    db.query("DELETE FROM `post` WHERE id = ?", 
+    [id], 
+    (err, results) => {
       if (err) {
         console.error("Error deleting post:", err);
-        callback(err, null);
+        callback(null, results);
       } else {
         callback(null, results);
       }

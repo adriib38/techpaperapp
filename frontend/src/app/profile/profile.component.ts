@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
     // Get the auth token
     this.authToken = this.authService.getAuthToken() ?? '';
 
-    this.profileService.getProfileByUsername(this.username).subscribe(
+    this.profileService.getProfileByUsername(this.authToken, this.username).subscribe(
       (data) => {
         console.log('Profile exitoso:', data.profile);
         data.profile.created_at = moment(data.profile.createdAt).format('DD/MM/YYYY');

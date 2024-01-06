@@ -38,6 +38,12 @@ export class PostService {
     return this.http.get(url, { headers });
   }
 
+  deletePostById(id: string, token: string): Observable<any> {
+    const url = `${this.apiUrl}/posts/${id}`;
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(url, { headers });
+  }
+
   createPost(post: any, token: string): Observable<any> {
     let body = {
       title: post.title,

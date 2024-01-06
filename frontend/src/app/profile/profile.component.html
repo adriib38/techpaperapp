@@ -1,6 +1,11 @@
 <div id="profile">
   <section id="profile-info">
     <div>
+      <button *ngIf="profile.me; else noMe">EDITAR</button>
+      <ng-template #noMe>
+        <button>FOLLOW</button>
+      </ng-template>
+
       <h1>{{ profile.name }}</h1>
       <p class="username-container">
         @{{ profile.username }}
